@@ -9,5 +9,13 @@
   <name>MediCurator</name>
   <url>https://bitbucket.org/BMI/medicurator</url>
 
+  <dependencies>
+    <dependency> 
+      <groupId>org.infinispan</groupId>
+      <artifactId>infinispan-embedded</artifactId> 
+      <version>8.2.0.Final</version> 
+    </dependency>
+  </dependencies>
+
 </project>
 
