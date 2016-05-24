@@ -1,3 +1,5 @@
+package edu.emory.bmi.medicurator.general;
+
 import java.util.HashSet;
 import java.util.HashMap;
 import java.io.Serializable;
