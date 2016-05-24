@@ -9,7 +9,7 @@ import org.apache.http.HttpEntity;
 public class TciaQuery
 {
     private final String BASE_URL = "https://services.cancerimagingarchive.net/services/v3/TCIA/query/";
-    private final String API_KEY = "ba449283-f680-4dc8-9df4-69545cc33f94";
+    private final String API_KEY = "ba449283-f680-4dc8-9df4-69545cc33f94";  // will change when release
 
     StringBuilder query;
     String method;

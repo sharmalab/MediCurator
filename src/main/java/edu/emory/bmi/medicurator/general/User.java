@@ -11,15 +11,14 @@ public class User implements Serializable
 
     private String username;
     private String password;
-    private Metadata meta;
-    private HashSet<UUID> replicaSetIDs;
+
+    private HashSet<UUID> replicaSets;
     
     public User(String username, String password)
     {
 	this.username = username;
 	this.password = password;
-	meta = new Metadata();
-	replicaSetIDs = new HashSet<UUID>();
+	replicaSets = new HashSet<UUID>();
 	ID.setUser(this.userid, this);
     }
 
@@ -43,19 +42,19 @@ public class User implements Serializable
 	return password.equals(this.password);
     }
 
-    public UUID[] getReplicaSetIDs()
+    public UUID[] getReplicaSets()
     {
-	return replicaSetIDs.toArray();
+	return replicaSets.toArray();
     }
 
     public boolean addReplicaSet(ReplicaSet rs)
     {
-
+	return replicaSets.add(rs.getID());
     }
 
     public boolean removeReplicaSet(UUID replicaSetID)
     {
-	return false;
+	return replicaSets.remove(replicaSetID);
     }
 }
 
