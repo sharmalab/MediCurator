@@ -19,6 +19,7 @@ public abstract class Data
 
     public abstract InputStream fetchFromDataSource();
     public abstract String savePath();
+    public abstract boolean updated();
 
     public Data(String dataType)
     {
