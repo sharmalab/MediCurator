@@ -1,19 +1,21 @@
 package edu.emory.bmi.medicurator.general;
 
 import edu.emory.bmi.medicurator.storage.Storage;
+import edu.emory.bmi.medicurator.storage.LocalStorage;
+import java.io.InputStream;
 import java.util.UUID;
 
 public abstract class Data
 {
     private UUID dataID = UUID.randomUUID();
-    public UUID getID { return dataID; }
+    public UUID getID() { return dataID; }
 
     private UUID metaID;
 
     protected final String dataType;
     private boolean downloaded;
 
-    private static final Storage storage;
+    private static Storage storage;
 
     public abstract InputStream fetchFromDataSource();
     public abstract String savePath();
@@ -23,8 +25,8 @@ public abstract class Data
 	ID.setData(dataID, this);
 	this.dataType = dataType;
 	downloaded = false;
-	meta = null;
-	metaID = 0;
+	metaID = null;
+	storage = new LocalStorage();
     }
 
     public boolean download()

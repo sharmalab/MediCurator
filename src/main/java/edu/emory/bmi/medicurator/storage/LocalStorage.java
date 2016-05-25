@@ -1,6 +1,9 @@
 package edu.emory.bmi.medicurator.storage;
 
-public class LocalStorage //implements Storage
-{
+import java.io.InputStream;
 
+public class LocalStorage implements Storage
+{
+    public boolean saveToPath(String path, InputStream in) { return false; }
+    public InputStream loadFromPath(String path) { return null; }
 }

@@ -1,5 +1,7 @@
 package edu.emory.bmi.medicurator.general;
 
+import java.util.UUID;
+import java.util.HashSet;
 import java.io.Serializable;
 
 public class ReplicaSet implements Serializable
@@ -23,12 +25,12 @@ public class ReplicaSet implements Serializable
 
     public boolean putDataSet(UUID datasetID)
     {
-	return dataSets.add(dataSetID);
+	return dataSets.add(datasetID);
     }
 
     public UUID[] getDataSets()
     {
-	return dataSets.toArray();
+	return (UUID[])dataSets.toArray();
     }
 
     public boolean removeDataSet(UUID datasetID)

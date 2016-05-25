@@ -25,6 +25,7 @@ public class User implements Serializable
     public boolean setUsername(String username)
     {
 	this.username = username;
+	return true;
     }
 
     public String getUsername()
@@ -35,6 +36,7 @@ public class User implements Serializable
     public boolean setPassword(String password)
     {
 	this.password = password;
+	return true;
     }
 
     public boolean checkPassword(String password)
@@ -44,7 +46,7 @@ public class User implements Serializable
 
     public UUID[] getReplicaSets()
     {
-	return replicaSets.toArray();
+	return (UUID[])replicaSets.toArray();
     }
 
     public boolean addReplicaSet(ReplicaSet rs)

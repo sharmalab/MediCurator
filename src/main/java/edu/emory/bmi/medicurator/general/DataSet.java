@@ -17,7 +17,7 @@ public abstract class DataSet
 	ID.setDataSet(dataSetID, this);
 	this.datasetType = datasetType;
 	downloaded = false;
-	metaID = 0;
+	metaID = null;
     }
 
     public abstract UUID getParent();
@@ -27,11 +27,11 @@ public abstract class DataSet
     public boolean download()
     {
 	if (downloaded) return true;
-	for (UUID id in getSubsets())
+	for (UUID id : getSubsets())
 	{
 	    ID.getDataSet(id).download();
 	}
-	for (UUID id in getData())
+	for (UUID id : getData())
 	{
 	    ID.getData(id).download();
 	}
