@@ -23,6 +23,7 @@ public abstract class DataSet
     public abstract UUID getParent();
     public abstract UUID[] getSubsets();
     public abstract UUID[] getData();
+    public abstract boolean updated();
 
     public boolean download()
     {

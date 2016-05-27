@@ -1,3 +1,5 @@
+package edu.emory.bmi.medicurator.tcia;
+
 import java.lang.StringBuilder;
 import java.util.Scanner;
 
@@ -6,6 +8,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpEntity;
+import java.io.InputStream;
 
 public class TciaQuery
 {
@@ -43,6 +46,15 @@ public class TciaQuery
 	HttpEntity entity = response.getEntity();
 	Scanner s = new Scanner(entity.getContent());
 	return s.hasNext() ? s.next() : "";
+    }
+
+    public InputStream getRawResult() throws Exception
+    {
+	HttpGet request = new HttpGet(getQuery());
+	HttpClient client = new DefaultHttpClient();
+	HttpResponse response = client.execute(request);
+	HttpEntity entity = response.getEntity();
+	return entity.getContent();
     }
 }
 
