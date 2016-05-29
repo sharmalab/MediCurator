@@ -38,7 +38,7 @@ public class ReplicaSet implements Serializable
 	return dataSets.remove(datasetID);
     }
 
-    public boolean download()
+    public boolean download() throws Exception
     {
 	for (UUID id : dataSets)
 	{

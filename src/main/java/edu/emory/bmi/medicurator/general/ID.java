@@ -9,26 +9,30 @@ public class ID
     private static DefaultCacheManager manager;
 
     private static Cache<UUID, User> maptoUser;
+    private static Cache<UUID, DataSource> maptoDataSource;
     private static Cache<UUID, ReplicaSet> maptoReplicaSet;
     private static Cache<UUID, DataSet> maptoDataSet;
     private static Cache<UUID, Metadata> maptoMetadata;
     private static Cache<UUID, Data> maptoData;
-    private static Cache<UUID, DataSource> maptoDataSource;
 
     static
     {
 	manager = new DefaultCacheManager();
 	maptoUser = manager.getCache("maptoUser");
+	maptoDataSource = manager.getCache("maptoDataSource");
 	maptoReplicaSet = manager.getCache("maptoReplicaSet");
 	maptoDataSet = manager.getCache("maptoDataSet");
 	maptoMetadata = manager.getCache("maptoMetadata");
 	maptoData = manager.getCache("maptoData");
-	maptoDataSource = manager.getCache("maptoDataSource");
     }
 
     public static User getUser(UUID id) { return maptoUser.get(id); }
 
     public static boolean setUser(UUID id, User user) { maptoUser.put(id, user); return true; }
+
+    public static DataSource getDataSource(UUID id) { return maptoDataSource.get(id); }
+
+    public static boolean setDataSource(UUID id, DataSource dataSource) { maptoDataSource.put(id, dataSource); return true; }
 
     public static ReplicaSet getReplicaSet(UUID id) { return maptoReplicaSet.get(id); }
 
@@ -45,9 +49,5 @@ public class ID
     public static Data getData(UUID id) { return maptoData.get(id); }
 
     public static boolean setData(UUID id, Data data) { maptoData.put(id, data); return true; }
-
-    public static DataSource getDataSource(UUID id) { return maptoDataSource.get(id); }
-
-    public static boolean setDataSource(UUID id, DataSource dataSource) { maptoDataSource.put(id, dataSource); return true; }
 }
 

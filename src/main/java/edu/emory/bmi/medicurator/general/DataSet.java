@@ -14,7 +14,6 @@ public abstract class DataSet
 
     public DataSet(String datasetType)
     {
-	ID.setDataSet(dataSetID, this);
 	this.datasetType = datasetType;
 	downloaded = false;
 	metaID = null;
@@ -25,7 +24,7 @@ public abstract class DataSet
     public abstract UUID[] getData();
     public abstract boolean updated();
 
-    public boolean download()
+    public boolean download() throws Exception
     {
 	if (downloaded) return true;
 	for (UUID id : getSubsets())
@@ -58,6 +57,11 @@ public abstract class DataSet
     public boolean setMetadata(Metadata meta)
     {
 	return setMetaID(meta.getID());
+    }
+
+    public boolean updateInf()
+    {
+	return ID.setDataSet(getID(), this);
     }
 }
 

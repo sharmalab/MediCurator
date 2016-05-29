@@ -10,7 +10,6 @@ public abstract class DataSource
     protected final String dataSourceType;
 
     public abstract UUID getRootDataSet();
-    public abstract UUID retrieveDataSet(Metadata meta);
 
     public DataSource(String dataSourceType)
     {
