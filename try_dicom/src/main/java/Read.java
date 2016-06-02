@@ -7,7 +7,7 @@ public class Read
 {
     public static void main(String[] args) throws Exception
     {
-	InputStream in = new FileInputStream(new File("/Users/xupengli/Downloads/a.dcm"));
+	InputStream in = new FileInputStream(new File("/tmp/a.dcm"));
 	DicomInputStream dcm = new DicomInputStream(in);
 	DicomObject img = dcm.readDicomObject();
 	System.out.println(img.isRoot());
