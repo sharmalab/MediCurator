@@ -1,8 +1,8 @@
-package edu.emory.bmi.medicurator.dupdect;
+package edu.emory.bmi.medicurator.dupdetect;
 
-import org.infinispan.Cache;
 import edu.emory.bmi.medicurator.general.Metadata;
-import java.util.AbstractMap.SimpleEntry
+import edu.emory.bmi.medicurator.image.Image;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.function.Function;
 import java.util.*;
 
@@ -10,6 +10,7 @@ public class Verify
 {
     public static boolean verify(Image a, Image b)
     {
+	try {
 	if (a.getHashCode().equals(b.getHashCode()))
 	{
 	    return true;
@@ -19,18 +20,20 @@ public class Verify
 	int count = 0;
 	for (String key : metaA.getKeys())
 	{
-	    if (!metaB.containsKey(key) || !metaB.get(key).equals(metaA.get(key)))
+	    if (!metaB.contains(key) || !metaB.get(key).equals(metaA.get(key)))
 		count++;
 	}
 	for (String key : metaB.getKeys())
 	{
-	    if (!metaA.containsKey(key))
+	    if (!metaA.contains(key))
 		count++;
 	}
 	if (count < 5) 
 	{
 	    return true;
 	}
+	}
+	catch (Exception e) {}
 	return false;
     }
 }

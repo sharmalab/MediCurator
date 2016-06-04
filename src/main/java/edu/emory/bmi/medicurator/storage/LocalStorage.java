@@ -1,13 +1,10 @@
 package edu.emory.bmi.medicurator.storage;
 
-import java.io.InputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.File;
+import java.io.*;
 
 public class LocalStorage implements Storage
 {
-    private String baseDir = "/tmp/medicurator";
+    private static String baseDir = "";
 
     public boolean saveToPath(String path, InputStream in) throws Exception
     {

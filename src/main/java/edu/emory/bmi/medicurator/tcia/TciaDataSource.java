@@ -1,5 +1,6 @@
 package edu.emory.bmi.medicurator.tcia;
 
+import edu.emory.bmi.medicurator.infinispan.ID;
 import edu.emory.bmi.medicurator.general.*;
 import java.util.UUID;
 
@@ -25,22 +26,22 @@ public class TciaDataSource extends DataSource
     {
 	TciaHierarchy hier = TciaHierarchy.ROOT;
 	Metadata[] metas = null;
-	if (meta.containsKey("SeriesInstanceUID"))
+	if (meta.contains("SeriesInstanceUID"))
 	{
 	    hier = TciaHierarchy.SERIES;
 	    metas = TciaAPI.getSeries(null, null, null, meta.get("SeriesInstanceUID"), null, null, null, null);
 	}
-	else if (meta.containsKey("StudyInstanceUID"))
+	else if (meta.contains("StudyInstanceUID"))
 	{
 	    hier = TciaHierarchy.STUDY;
 	    metas = TciaAPI.getPatientStudy(null, null, meta.get("StudyInstanceUID"));
 	}
-	else if (meta.containsKey("PatnentID"))
+	else if (meta.contains("PatnentID"))
 	{
 	    hier = TciaHierarchy.PATIENT;
 	    metas = TciaAPI.getPatientStudy(null, null, meta.get("PatientID"));
 	}
-	else if (meta.containsKey("Collection"))
+	else if (meta.contains("Collection"))
 	{
 	    hier = TciaHierarchy.COLLECTION;
 	    metas = TciaAPI.getPatient(meta.get("Collection"));

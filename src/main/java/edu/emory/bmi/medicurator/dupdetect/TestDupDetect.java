@@ -1,7 +1,8 @@
 package edu.emory.bmi.medicurator.dupdetect;
 
-import edu.emory.bmi.general.*;
-import edu.emory.bmi.infinispan.*;
+import edu.emory.bmi.medicurator.general.*;
+import edu.emory.bmi.medicurator.infinispan.*;
+import edu.emory.bmi.medicurator.image.*;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.io.*;
@@ -9,8 +10,6 @@ import java.io.*;
 public class TestDupDetect
 {
     private static ArrayList<UUID> imgIDs = new ArrayList<UUID>();
-
-
 
     private static void findImgs(File dir)
     {
@@ -26,13 +25,18 @@ public class TestDupDetect
 	}
     }
 
-    public static void main(String[] args)
+    public static void main(String[] args) throws Exception
     {
 
-	File baseDir = new File("/tmp/dicoms/");
+	File baseDir = new File("/home/lixupeng/dicoms/");
 
 	findImgs(baseDir);
-	DuplicatePair[] dps = DupDetect.detect(imgIDs);
+
+	System.out.println("hhhhhhhhhhhh");
+
+
+
+	DuplicatePair[] dps = DupDetect.detect((UUID[])imgIDs.toArray());
 
 	for (int i = 0; i < dps.length; ++i)
 	{

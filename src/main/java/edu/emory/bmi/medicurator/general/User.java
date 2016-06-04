@@ -1,5 +1,6 @@
 package edu.emory.bmi.medicurator.general;
 
+import edu.emory.bmi.medicurator.infinispan.ID;
 import java.util.UUID;
 import java.util.HashSet;
 import java.io.Serializable;

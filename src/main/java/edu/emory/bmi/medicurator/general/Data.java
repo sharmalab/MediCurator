@@ -2,6 +2,7 @@ package edu.emory.bmi.medicurator.general;
 
 import edu.emory.bmi.medicurator.storage.Storage;
 import edu.emory.bmi.medicurator.storage.LocalStorage;
+import edu.emory.bmi.medicurator.infinispan.ID;
 import java.io.InputStream;
 import java.util.UUID;
 
@@ -62,9 +63,9 @@ public abstract class Data
 	return setMetaID(meta.getID());
     }
 
-    public boolean updateInf()
+    public void updateInf()
     {
-	return ID.setData(getID(), this);
+	ID.setData(getID(), this);
     }
 }
 

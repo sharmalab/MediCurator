@@ -1,5 +1,6 @@
 package edu.emory.bmi.medicurator.general;
 
+import edu.emory.bmi.medicurator.infinispan.ID;
 import java.util.UUID;
 
 public abstract class DataSet
@@ -59,9 +60,9 @@ public abstract class DataSet
 	return setMetaID(meta.getID());
     }
 
-    public boolean updateInf()
+    public void updateInf()
     {
-	return ID.setDataSet(getID(), this);
+	ID.setDataSet(getID(), this);
     }
 }
 
