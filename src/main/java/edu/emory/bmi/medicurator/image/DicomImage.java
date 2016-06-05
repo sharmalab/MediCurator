@@ -34,12 +34,13 @@ public class DicomImage extends Image
 	    ID.setMetadata(meta.getID(), meta);
 	    metaID = meta.getID();
 	    updateInf();
+	    return meta;
 	}
 	else
 	{
 	    return ID.getMetadata(metaID);
 	}
-	} catch (Exception e) {}
+	} catch (Exception e) {System.out.println(e);}
 	return null;
     }
 
@@ -50,7 +51,7 @@ public class DicomImage extends Image
 	DicomObject dcm = stream.readDicomObject();
 	return dcm.getBytes(Tag.PixelData);
 	}
-	catch (Exception e) {}
+	catch (Exception e) {System.out.println(e);}
 	return null;
     }
 
@@ -65,7 +66,7 @@ public class DicomImage extends Image
 	try {
 	    return (new LocalStorage()).loadFromPath(path);
 	}
-	catch (Exception e) {}
+	catch (Exception e) {System.out.println(e);}
 	return null;
     }
 }

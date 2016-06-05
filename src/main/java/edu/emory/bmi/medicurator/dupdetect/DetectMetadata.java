@@ -25,18 +25,21 @@ class ParseMetadata implements Serializable, Function<Map.Entry<UUID, Metadata>,
 	ArrayList<Map.Entry<String, UUID>> result = new ArrayList<Map.Entry<String, UUID>>();
 	for (int r = 0; r < 5; ++r)
 	{
-	    int choose = 0;
+	    int choose = -1;
 	    for (int i = 1; i < keys.length; ++i)
 	    {
-		if (!keys[i].equals("") && order.get(keys[i]) < order.get(keys[0]))
+		if (!keys[i].equals("") && (choose == -1 || order.get(keys[i]) > order.get(keys[choose])))
 		    choose = i;
 	    }
-	    result.add(new SimpleEntry<String, UUID>(meta.get(keys[choose]), e.getKey()));
+	    result.add(new SimpleEntry<String, UUID>(keys[choose] + meta.get(keys[choose]), e.getKey()));
 	    keys[choose] = "";
 	}
-	return (Map.Entry<String, UUID>[])result.toArray();
+	return (SimpleEntry<String, UUID>[])result.toArray(new SimpleEntry[0]);
+
 	}
-	catch (Exception x) {}
+	catch (Exception x) {
+	    System.out.println(x);
+	}
 	return null;
     }
 }
@@ -56,13 +59,13 @@ public class DetectMetadata
 	ArrayList<DuplicatePair> result = new ArrayList<DuplicatePair>();
 	for (Map.Entry<String, List<Map.Entry<String, UUID>>> e : candidates.entrySet())
 	{
-	    Map.Entry<String, UUID>[] dup = (Map.Entry<String, UUID>[])e.getValue().toArray();
+	    Map.Entry<String, UUID>[] dup = (Map.Entry<String, UUID>[])e.getValue().toArray(new Map.Entry[0]);
 	    for (int i = 1; i < dup.length; ++i)
 	    {
 		result.add(new DuplicatePair(dup[0].getValue(), dup[i].getValue()));
 	    }
 	}
-	return (DuplicatePair[])result.toArray();
+	return (DuplicatePair[])result.toArray(new DuplicatePair[0]);
     }
 }
 

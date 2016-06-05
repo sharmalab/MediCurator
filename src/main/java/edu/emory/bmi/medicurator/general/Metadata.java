@@ -10,7 +10,7 @@ public class Metadata implements Serializable
     private UUID metaID = UUID.randomUUID();
     public UUID getID() { return metaID; }
 
-    private HashMap<String, String> keyValues;
+    public HashMap<String, String> keyValues;
 
     public Metadata()
     {
@@ -24,12 +24,12 @@ public class Metadata implements Serializable
 
     public void put(String word) { keyValues.put(word, ""); }
 
-    public String put(String key, String value) { return keyValues.put(key, value); }
+    public String put(String key, String value) { if (value == null) value = ""; return keyValues.put(key, value); }
 
     public boolean contains(String key) { return keyValues.containsKey(key); }
 
     public String get(String key) { return keyValues.get(key); }
 
-    public String[] getKeys() { return (String[])keyValues.keySet().toArray(); }
+    public String[] getKeys() { return (String[])keyValues.keySet().toArray(new String[0]); }
 }
 

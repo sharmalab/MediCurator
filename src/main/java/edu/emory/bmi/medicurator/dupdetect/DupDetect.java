@@ -71,7 +71,7 @@ public class DupDetect
 
 	candidate.stop();
 	idCache.stop();
-	return (DuplicatePair[])result.toArray();
+	return (DuplicatePair[])result.toArray(new DuplicatePair[0]);
     }
 }
 

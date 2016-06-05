@@ -11,13 +11,6 @@ public abstract class Image
     private UUID imageID = UUID.randomUUID();
     public UUID getID() { return imageID; }
 
-    private static MessageDigest mdigest;
-    static {
-	try {
-	    mdigest = MessageDigest.getInstance("MD5");
-	}
-	catch (Exception e) {}
-    }
 
     protected String path;
     protected String md5;
@@ -29,6 +22,7 @@ public abstract class Image
     public Image(String path)
     {
 	this.path = path;
+	metaID = null;
 	md5 = null;
     }
 
@@ -37,14 +31,14 @@ public abstract class Image
 	if (md5 == null)
 	{
 	    try {
-	    byte[] data = getRawImage();
-	    mdigest.reset();
-	    mdigest.update(data);
-	    byte[] digest = mdigest.digest();
-	    BigInteger code = new BigInteger(1, digest);
-	    md5 = code.toString(16);
-	    while(md5.length() < 32) md5 = "0" + md5;
-	    updateInf();
+		byte[] data = getRawImage();
+		MessageDigest md = MessageDigest.getInstance("MD5");
+		md.reset();
+		md.update(data);
+		BigInteger code = new BigInteger(1, md.digest());
+		md5 = code.toString(16);
+		while(md5.length() < 32) md5 = "0" + md5;
+		updateInf();
 	    }
 	    catch (Exception e) {}
 	}

@@ -24,13 +24,13 @@ public class DetectImage
 	ArrayList<DuplicatePair> result = new ArrayList<DuplicatePair>();
 	for (Map.Entry<String, List<Map.Entry<String, UUID>>> e : candidates.entrySet())
 	{
-	    Map.Entry<String, UUID>[] dup = (Map.Entry<String, UUID>[])e.getValue().toArray();
+	    Map.Entry<String, UUID>[] dup = (Map.Entry<String, UUID>[])e.getValue().toArray(new Map.Entry[0]);
 	    for (int i = 1; i < dup.length; ++i)
 	    {
 		result.add(new DuplicatePair(dup[0].getValue(), dup[i].getValue()));
 	    }
 	}
-	return (DuplicatePair[])result.toArray();
+	return (DuplicatePair[])result.toArray(new DuplicatePair[0]);
     }
 }
 

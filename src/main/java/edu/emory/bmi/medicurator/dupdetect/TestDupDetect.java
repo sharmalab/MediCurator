@@ -28,15 +28,11 @@ public class TestDupDetect
     public static void main(String[] args) throws Exception
     {
 
-	File baseDir = new File("/home/lixupeng/dicoms/");
+	File baseDir = new File("/home/chenyr/dicoms/");
 
 	findImgs(baseDir);
 
-	System.out.println("hhhhhhhhhhhh");
-
-
-
-	DuplicatePair[] dps = DupDetect.detect((UUID[])imgIDs.toArray());
+	DuplicatePair[] dps = DupDetect.detect((UUID[])imgIDs.toArray(new UUID[0]));
 
 	for (int i = 0; i < dps.length; ++i)
 	{
