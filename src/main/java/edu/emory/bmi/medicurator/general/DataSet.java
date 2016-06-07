@@ -1,5 +1,6 @@
 package edu.emory.bmi.medicurator.general;
 
+import edu.emory.bmi.medicurator.image.Image;
 import edu.emory.bmi.medicurator.infinispan.ID;
 import java.util.UUID;
 
@@ -22,19 +23,16 @@ public abstract class DataSet
 
     public abstract UUID getParent();
     public abstract UUID[] getSubsets();
-    public abstract UUID[] getData();
+    public abstract UUID[] getImages();
     public abstract boolean updated();
 
-    public boolean download() throws Exception
+    public void download() throws Exception
     {
 	if (downloaded) return true;
+	getImages();
 	for (UUID id : getSubsets())
 	{
 	    ID.getDataSet(id).download();
-	}
-	for (UUID id : getData())
-	{
-	    ID.getData(id).download();
 	}
 	return true;
     }
