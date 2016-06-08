@@ -4,6 +4,7 @@ import edu.emory.bmi.medicurator.storage.LocalStorage;
 import edu.emory.bmi.medicurator.general.*;
 import edu.emory.bmi.medicurator.infinispan.ID;
 
+// employ the third party libiary
 import org.dcm4che2.io.DicomInputStream;
 import org.dcm4che2.data.DicomObject;
 import org.dcm4che2.data.DicomElement;
@@ -14,42 +15,40 @@ import java.util.*;
 
 public class DicomImage extends Image
 {
-    private UUID imageID = UUID.randomUUID();
-    public UUID getID() { return imageID; }
-
     public Metadata getMetadata()
     {
 	try {
-	if (metaID == null)
-	{
-	    DicomInputStream stream = new DicomInputStream(getImage());
-	    DicomObject dcm = stream.readDicomObject();
-	    Metadata meta = new Metadata();
-	    for (Iterator iter = dcm.datasetIterator(); iter.hasNext(); )
+	    if (metaID == null)
 	    {
-		DicomElement e = (DicomElement)iter.next();
-		if (e.tag() == Tag.PixelData) continue;
-		meta.put(Integer.toHexString(e.tag()) + ":" + dcm.nameOf(e.tag()), dcm.getString(e.tag()));
+		DicomInputStream stream = new DicomInputStream(getImage());
+		DicomObject dcm = stream.readDicomObject();
+		Metadata meta = new Metadata();
+		for (Iterator iter = dcm.datasetIterator(); iter.hasNext(); )
+		{
+		    DicomElement e = (DicomElement)iter.next();
+		    if (e.tag() == Tag.PixelData) continue;
+		    meta.put(Integer.toHexString(e.tag()) + ":" + dcm.nameOf(e.tag()), dcm.getString(e.tag()));
+		}
+		ID.setMetadata(meta.getID(), meta);
+		metaID = meta.getID();
+		store();
+		return meta;
 	    }
-	    ID.setMetadata(meta.getID(), meta);
-	    metaID = meta.getID();
-	    updateInf();
-	    return meta;
-	}
-	else
-	{
-	    return ID.getMetadata(metaID);
-	}
+	    else
+	    {
+		return ID.getMetadata(metaID);
+	    }
 	} catch (Exception e) {System.out.println(e);}
 	return null;
     }
 
+    //employ the third party library to get the rawimage
     public byte[] getRawImage()
     {
 	try {
-	DicomInputStream stream = new DicomInputStream(getImage());
-	DicomObject dcm = stream.readDicomObject();
-	return dcm.getBytes(Tag.PixelData);
+	    DicomInputStream stream = new DicomInputStream(getImage());
+	    DicomObject dcm = stream.readDicomObject();
+	    return dcm.getBytes(Tag.PixelData);
 	}
 	catch (Exception e) {System.out.println(e);}
 	return null;
@@ -64,10 +63,9 @@ public class DicomImage extends Image
     private InputStream getImage()
     {
 	try {
-	    return (new LocalStorage()).loadFromPath(path);
+	    return storage.loadFromPath(path);
 	}
 	catch (Exception e) {System.out.println(e);}
 	return null;
     }
 }
-

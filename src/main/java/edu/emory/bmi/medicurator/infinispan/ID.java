@@ -51,8 +51,5 @@ public class ID
     public static Image getImage(UUID id) { return maptoImage.get(id); }
 
     public static void setImage(UUID id, Image image) { maptoImage.put(id, image); }
-
-    public static Data getData(UUID id) { return null; }
-    public static void setData(UUID id, Data data) {}
 }
 

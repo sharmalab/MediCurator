@@ -24,7 +24,7 @@ public class TestDupDetect
 	for (File img : baseDir.listFiles())
 	{
 	    String path = img.getAbsolutePath();
-	    imgIDs.add((new DicomImage(path)).getID());
+	    imgIDs.add((new DicomImage("/dicoms/" + img.getName())).getID());
 	}
     }
 

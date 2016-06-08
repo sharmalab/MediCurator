@@ -3,6 +3,7 @@ package edu.emory.bmi.medicurator.general;
 import edu.emory.bmi.medicurator.image.Image;
 import edu.emory.bmi.medicurator.infinispan.ID;
 import java.util.UUID;
+import java.util.zip.*;
 
 public abstract class DataSet
 {
@@ -10,9 +11,13 @@ public abstract class DataSet
     public UUID getID() { return dataSetID; }
 
     private UUID metaID;
-
     protected final String datasetType;
     private boolean downloaded;
+
+    public abstract UUID getParent();
+    public abstract UUID[] getSubsets();
+    public abstract UUID[] getImages();
+    public abstract boolean updated();
 
     public DataSet(String datasetType)
     {
@@ -21,19 +26,19 @@ public abstract class DataSet
 	metaID = null;
     }
 
-    public abstract UUID getParent();
-    public abstract UUID[] getSubsets();
-    public abstract UUID[] getImages();
-    public abstract boolean updated();
-
-    public void download() throws Exception
+    public boolean download() throws Exception
     {
 	if (downloaded) return true;
 	getImages();
-	for (UUID id : getSubsets())
+	if (getSubsets() != null)
 	{
-	    ID.getDataSet(id).download();
+	    for (UUID id : getSubsets())
+	    {
+		ID.getDataSet(id).download();
+	    }
 	}
+	downloaded = true;
+	store();
 	return true;
     }
 
@@ -42,23 +47,18 @@ public abstract class DataSet
 	return metaID;
     }
 
-    public boolean setMetaID(UUID metaID)
-    {
-	this.metaID = metaID;
-	return true;
-    }
-
     public Metadata getMetadata()
     {
 	return ID.getMetadata(metaID);
     }
 
-    public boolean setMetadata(Metadata meta)
+    public void setMetaID(UUID id)
     {
-	return setMetaID(meta.getID());
+	metaID = id;
+	store();
     }
 
-    public void updateInf()
+    public void store()
     {
 	ID.setDataSet(getID(), this);
     }

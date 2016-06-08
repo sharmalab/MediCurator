@@ -22,14 +22,35 @@ public class Metadata implements Serializable
 	keyValues = new HashMap<String, String>(another.keyValues);
     }
 
-    public void put(String word) { keyValues.put(word, ""); }
+    public void put(String word)
+    {
+	keyValues.put(word, "");
+    }
 
-    public String put(String key, String value) { if (value == null) value = ""; return keyValues.put(key, value); }
+    public void put(String key, String value)
+    { 
+	if (value == null) value = ""; 
+	keyValues.put(key, value); 
+    }
 
-    public boolean contains(String key) { return keyValues.containsKey(key); }
+    public boolean contains(String key) 
+    {
+	return keyValues.containsKey(key);
+    }
 
-    public String get(String key) { return keyValues.get(key); }
+    public String get(String key)
+    {
+	return keyValues.get(key);
+    }
 
-    public String[] getKeys() { return (String[])keyValues.keySet().toArray(new String[0]); }
+    public String[] getKeys()
+    {
+	return (String[])keyValues.keySet().toArray(new String[0]); 
+    }
+
+    public void store()
+    {
+	ID.setMetadata(metaID, this);
+    }
 }
 

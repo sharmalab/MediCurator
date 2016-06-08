@@ -12,13 +12,15 @@ public class TciaDataSource extends DataSource
     {
 	super("tcia");
 	rootDataSet = null;
+	store();
     }
 
     public UUID getRootDataSet() 
     {
 	if (rootDataSet == null)
 	{
-	    rootDataSet = (new TciaDataSet(TciaHierarchy.ROOT, null, null)).getID();
+	    rootDataSet = (new TciaDataSet(TciaHierarchy.ROOT, null, new Metadata())).getID();
+	    store();
 	}
 	return rootDataSet;
     }

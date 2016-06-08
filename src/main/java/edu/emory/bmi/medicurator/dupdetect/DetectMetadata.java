@@ -48,6 +48,7 @@ public class DetectMetadata
 {
     public static DuplicatePair[] detect(Cache<UUID, Image> origin)
     {
+	//different K-V at most five 
 	Map<String, List<Map.Entry<String, UUID>>> candidates = 
 	    origin.entrySet().parallelStream()
 	    .map((Serializable & Function<Map.Entry<UUID, Image>, Map.Entry<UUID, Metadata>>)

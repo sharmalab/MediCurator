@@ -15,12 +15,15 @@ public class DetectImage
 {
     public static DuplicatePair[] detect(Cache<UUID, Image> origin) throws Exception
     {
+	//string - md5, md5 --- UUID 
 	Map<String, List<Map.Entry<String, UUID>>> candidates = 
 	    origin.entrySet().parallelStream()
 	    .map((Serializable & Function<Map.Entry<UUID, Image>, Map.Entry<String, UUID>>) 
 		    e -> new SimpleEntry<String, UUID>(e.getValue().getHashCode(), e.getKey()))
 	    .collect(CacheCollectors.serializableCollector(() -> Collectors.groupingBy(e -> e.getKey())));
 
+
+	//make pair
 	ArrayList<DuplicatePair> result = new ArrayList<DuplicatePair>();
 	for (Map.Entry<String, List<Map.Entry<String, UUID>>> e : candidates.entrySet())
 	{

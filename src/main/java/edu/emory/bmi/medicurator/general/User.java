@@ -7,8 +7,8 @@ import java.io.Serializable;
 
 public class User implements Serializable
 {
-    private UUID userid = UUID.randomUUID();
-    public UUID getID() { return userid; }
+    private UUID userID = UUID.randomUUID();
+    public UUID getID() { return userID; }
 
     private String username;
     private String password;
@@ -20,13 +20,13 @@ public class User implements Serializable
 	this.username = username;
 	this.password = password;
 	replicaSets = new HashSet<UUID>();
-	ID.setUser(this.userid, this);
+	store();
     }
 
-    public boolean setUsername(String username)
+    public void setUsername(String username)
     {
 	this.username = username;
-	return true;
+	store();
     }
 
     public String getUsername()
@@ -34,10 +34,10 @@ public class User implements Serializable
 	return username;
     }
     
-    public boolean setPassword(String password)
+    public void setPassword(String password)
     {
 	this.password = password;
-	return true;
+	store();
     }
 
     public boolean checkPassword(String password)
@@ -50,14 +50,21 @@ public class User implements Serializable
 	return (UUID[])replicaSets.toArray();
     }
 
-    public boolean addReplicaSet(ReplicaSet rs)
+    public void addReplicaSet(ReplicaSet rs)
     {
-	return replicaSets.add(rs.getID());
+	replicaSets.add(rs.getID());
+	store();
     }
 
-    public boolean removeReplicaSet(UUID replicaSetID)
+    public void removeReplicaSet(UUID replicaSetID)
     {
-	return replicaSets.remove(replicaSetID);
+	replicaSets.remove(replicaSetID);
+	store();
+    }
+
+    public void store()
+    {
+	ID.setUser(userID, this);
     }
 }
 

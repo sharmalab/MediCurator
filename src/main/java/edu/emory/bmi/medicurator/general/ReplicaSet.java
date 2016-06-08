@@ -14,19 +14,20 @@ public class ReplicaSet implements Serializable
 
     public ReplicaSet()
     {
-	ID.setReplicaSet(replicaSetID, this);
 	dataSets = new HashSet<UUID>();
+	store();
     }
 
     public ReplicaSet(ReplicaSet another)
     {
-	ID.setReplicaSet(replicaSetID, this);
 	dataSets = new HashSet<UUID>(another.dataSets);
+	store();
     }
 
-    public boolean putDataSet(UUID datasetID)
+    public void putDataSet(UUID datasetID)
     {
-	return dataSets.add(datasetID);
+	dataSets.add(datasetID);
+	store();
     }
 
     public UUID[] getDataSets()
@@ -34,18 +35,23 @@ public class ReplicaSet implements Serializable
 	return (UUID[])dataSets.toArray();
     }
 
-    public boolean removeDataSet(UUID datasetID)
+    public void removeDataSet(UUID datasetID)
     {
-	return dataSets.remove(datasetID);
+	dataSets.remove(datasetID);
+	store();
     }
 
-    public boolean download() throws Exception
+    public void download() throws Exception
     {
 	for (UUID id : dataSets)
 	{
 	    ID.getDataSet(id).download();
 	}
-	return true;
+    }
+
+    public void store()
+    {
+	ID.setReplicaSet(replicaSetID, this);
     }
 }
 

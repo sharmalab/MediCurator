@@ -1,41 +1,27 @@
 package edu.emory.bmi.medicurator.test;
 
-import org.junit.Before;
-import org.junit.Test;
-import static org.junit.Assert.*;
-
 import edu.emory.bmi.medicurator.general.*;
+import edu.emory.bmi.medicurator.tcia.*;
 import edu.emory.bmi.medicurator.infinispan.*;
-import edu.emory.bmi.medicurator.dupdetect.*;
 import edu.emory.bmi.medicurator.image.*;
-import java.util.ArrayList;
-import java.util.UUID;
-import java.io.*;
+import edu.emory.bmi.medicurator.storage.*;
 
-public class TestDupDetect
+public class TestTcia
 {
-    ArrayList<UUID> imgIDs;
-
-    @Before
-    public void setupImg()
+    public static void main(String[] args) throws Exception
     {
-	File baseDir = new File(TestDupDetect.class.getResource("/dicoms").getPath());
-	imgIDs = new ArrayList<UUID>();
-	for (File img : baseDir.listFiles())
-	{
-	    String path = img.getAbsolutePath();
-	    imgIDs.add((new DicomImage(path)).getID());
-	}
-    }
-
-    @Test
-    public void testDupDetect() throws Exception
-    {
-	DuplicatePair[] dps = DupDetect.detect((UUID[])imgIDs.toArray(new UUID[0]));
-	for (DuplicatePair dp : dps)
-	{
-	    System.out.println(ID.getImage(dp.first).getPath() + "  =  " + ID.getImage(dp.second).getPath());
-	}
+	TciaDataSource source = new TciaDataSource();
+	TciaDataSet root = (TciaDataSet)ID.getDataSet(source.getRootDataSet());
+	TciaDataSet collection = (TciaDataSet)ID.getDataSet(root.getSubsets()[0]);
+	System.out.println(collection.getKeyword());
+	TciaDataSet patient = (TciaDataSet)ID.getDataSet(collection.getSubsets()[0]);
+	System.out.println(patient.getKeyword());
+	TciaDataSet study = (TciaDataSet)ID.getDataSet(patient.getSubsets()[0]);
+	System.out.println(study.getKeyword());
+	TciaDataSet series = (TciaDataSet)ID.getDataSet(study.getSubsets()[0]);
+	System.out.println(series.getKeyword());
+	series.download();
+	study.download();
+	System.out.println("Finish");
     }
 }
-

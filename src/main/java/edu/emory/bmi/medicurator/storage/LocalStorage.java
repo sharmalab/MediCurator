@@ -4,7 +4,8 @@ import java.io.*;
 
 public class LocalStorage implements Storage
 {
-    private static String baseDir = "";
+    private static String baseDir = LocalStorage.class.getResource("/").getPath();
+    private static Storage storage = new LocalStorage();
 
     public boolean saveToPath(String path, InputStream in) throws Exception
     {
@@ -25,6 +26,11 @@ public class LocalStorage implements Storage
     public InputStream loadFromPath(String path) throws Exception
     { 
 	return new FileInputStream(path);
+    }
+
+    public static Storage getInstance()
+    {
+	return storage;
     }
 }
 

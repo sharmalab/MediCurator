@@ -1,28 +1,33 @@
 package edu.emory.bmi.medicurator.tcia;
 
 import edu.emory.bmi.medicurator.infinispan.ID;
+import edu.emory.bmi.medicurator.storage.*;
 import edu.emory.bmi.medicurator.general.*;
+import edu.emory.bmi.medicurator.image.*;
 import java.util.UUID;
+import java.util.ArrayList;
+import java.util.zip.*;
 
 public class TciaDataSet extends DataSet
 {
+    private static Storage storage = LocalStorage.getInstance();
     private TciaHierarchy hierarchy;
     private String keyword;
     private UUID parent;
     private UUID[] subsets;
-    private UUID[] data;
+    private UUID[] images;
 
     public boolean updated() { return true; }
 
     public TciaDataSet(TciaHierarchy hierarchy, UUID parent, Metadata meta)
     {
 	super("tcia");
-	ID.setMetadata(meta.getID(), meta);
+	meta.store();
 	setMetaID(meta.getID());
 	this.hierarchy = hierarchy;
 	this.parent = parent;
 	subsets = null;
-	data = null;
+	images = null;
 	switch (hierarchy)
 	{
 	    case ROOT:
@@ -40,11 +45,8 @@ public class TciaDataSet extends DataSet
 	    case SERIES:
 		keyword = meta.get("SeriesInstanceUID");
 		break;
-	    case IMAGE:
-		keyword = meta.get("SOPInstanceUID"); 
-		break;
 	}
-	updateInf();
+	store();
     }
 
     public UUID getParent()
@@ -55,6 +57,7 @@ public class TciaDataSet extends DataSet
     private void makeSubsets(Metadata[] metas, TciaHierarchy subHierarchy)
     {
 	subsets = new UUID[metas.length];
+	System.out.println(metas.length);
 	for (int i = 0; i < metas.length; ++i)
 	{
 	    DataSet subset = new TciaDataSet(subHierarchy, getID(), metas[i]);
@@ -87,24 +90,46 @@ public class TciaDataSet extends DataSet
 			metas = TciaAPI.getSeries(meta.get("Collection"), meta.get("PatientID"), meta.get("StudyInstanceUID"), null, null, null, null, null);
 			makeSubsets(metas, TciaHierarchy.SERIES);
 			break;
-		    case SERIES:
-			metas = TciaAPI.getSOPInstanceUIDs(meta.get("SeriesInstanceUID"));
-			subsets = new UUID[metas.length];
-			for (int i = 0; i < metas.length; ++i)
-			{
-			    Metadata submeta = new Metadata(meta);	    
-			    submeta.put("SOPInstanceUID", metas[i].get("sop_instance_uid"));
-			    DataSet subset = new TciaDataSet(TciaHierarchy.IMAGE, getID(), submeta);
-			    subsets[i] = subset.getID();
-			}
-			break;
 		}
-		updateInf();
+		store();
 	    }
-	} catch (Exception e){}
-
+	} 
+	catch (Exception e){System.out.println(e);}
 
 	return subsets;
+    }
+
+    public UUID[] getImages()
+    {
+	if (images == null && hierarchy == TciaHierarchy.SERIES)
+	{
+	    try {
+		Metadata meta = getMetadata();
+		ArrayList<UUID> imgs = new ArrayList<UUID>();
+		String root = "/tcia/" + meta.get("Collection") + "/" + ID.getDataSet(getParent()).getMetadata().get("PatientID") + "/" + 
+		    meta.get("StudyInstanceUID") + "/" + meta.get("SeriesInstanceUID") + "/";
+		ZipInputStream zip = new ZipInputStream(TciaAPI.getImage(meta.get("SeriesInstanceUID")));
+		ZipEntry ze;
+		while ((ze = zip.getNextEntry()) != null)
+		{
+		    if (ze.isDirectory()) continue;
+		    String path = root + ze.getName();
+		    System.out.println(path);
+		    storage.saveToPath(path, zip);
+		    Image img = new DicomImage(path);
+		    imgs.add(img.getID());
+		}
+		images = (UUID[])imgs.toArray(new UUID[0]);
+		store();
+	    }
+	    catch (Exception e) {}
+	}
+	return images;
+    }
+
+    public String getKeyword()
+    {
+	return keyword;
     }
 
     public UUID getSubset(String keyword)
@@ -117,22 +142,6 @@ public class TciaDataSet extends DataSet
 	    }
 	}
 	return null;
-    }
-
-    public UUID[] getData()
-    {
-	if (data == null && (hierarchy == TciaHierarchy.SERIES || hierarchy == TciaHierarchy.IMAGE))
-	{
-	    data = new UUID[1];
-	    data[0] = (new TciaData(hierarchy, getID())).getID();
-	    updateInf();
-	}
-	return data;
-    }
-
-    public String getKeyword()
-    {
-	return keyword;
     }
 }
 

@@ -2,6 +2,7 @@ package edu.emory.bmi.medicurator.image;
 
 import edu.emory.bmi.medicurator.general.Metadata;
 import edu.emory.bmi.medicurator.infinispan.ID;
+import edu.emory.bmi.medicurator.storage.*;
 import java.security.MessageDigest;
 import java.util.UUID;
 import java.math.BigInteger;
@@ -11,7 +12,7 @@ public abstract class Image
     private UUID imageID = UUID.randomUUID();
     public UUID getID() { return imageID; }
 
-
+    protected Storage storage = LocalStorage.getInstance();
     protected String path;
     protected String md5;
     protected UUID metaID;
@@ -26,6 +27,7 @@ public abstract class Image
 	md5 = null;
     }
 
+    // compute md5
     public String getHashCode()
     {
 	if (md5 == null)
@@ -38,7 +40,7 @@ public abstract class Image
 		BigInteger code = new BigInteger(1, md.digest());
 		md5 = code.toString(16);
 		while(md5.length() < 32) md5 = "0" + md5;
-		updateInf();
+		store();
 	    }
 	    catch (Exception e) {}
 	}
@@ -54,10 +56,11 @@ public abstract class Image
     {
 	return getMetadata().getID();
     }
-
-    protected void updateInf()
+    
+    //update the infinispan data
+    protected void store()
     {
-	ID.setImage(getID(), this);
+	ID.setImage(imageID, this);
     }
 }
 

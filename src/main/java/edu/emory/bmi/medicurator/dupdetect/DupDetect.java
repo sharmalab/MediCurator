@@ -23,7 +23,7 @@ public class DupDetect
 	{
 	    idCache.put(id, ID.getImage(id));
 	}
-
+	//almost entropy largest, have the most different values 
 	Map<String, Integer> order = idCache.entrySet().parallelStream()
 	    .map((Serializable & Function<Map.Entry<UUID, Image>, Map.Entry<String, String>[]>) e ->
 		    {

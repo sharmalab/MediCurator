@@ -14,13 +14,17 @@ public abstract class DataSource
 
     public DataSource(String dataSourceType)
     {
-	ID.setDataSource(dataSourceID, this);
 	this.dataSourceType = dataSourceType;
     }
 
     public String getDataSourceType()
     {
 	return dataSourceType;
+    }
+
+    public void store()
+    {
+	ID.setDataSource(dataSourceID, this);
     }
 }
 

@@ -7,6 +7,11 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpHost;
+import org.apache.http.conn.ssl.*;
+import javax.net.ssl.*;
+import java.security.cert.*;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.HttpEntity;
 import java.io.InputStream;
 
@@ -39,23 +44,50 @@ public class TciaQuery
 	return query.toString();
     }
 
+    private HttpClient getInsecureClient() throws Exception
+    {
+	SSLContext sslContext = new SSLContextBuilder().loadTrustMaterial(null, new TrustStrategy() {
+		public boolean isTrusted(X509Certificate[] chain,
+		    String authType) throws CertificateException {
+		return true;
+		}
+		}).build();
+	SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext);
+	return HttpClientBuilder.create().setSSLSocketFactory(sslsf).build();
+
+    }
+
     public String getResult() throws Exception
     {
-	HttpGet request = new HttpGet(getQuery());
-	HttpClient client = HttpClientBuilder.create().build();
-	HttpResponse response = client.execute(request);
-	HttpEntity entity = response.getEntity();
-	Scanner s = new Scanner(entity.getContent());
-	return s.hasNext() ? s.next() : "";
+	System.out.println(getQuery());
+	try{
+	    HttpGet request = new HttpGet(getQuery());
+	    request.setConfig(RequestConfig.custom().setProxy(new HttpHost("162.105.74.252", 8338, "http")).build());
+	    //HttpClient client = HttpClientBuilder.create().build();
+	    HttpClient client = getInsecureClient();
+	    HttpResponse response = client.execute(request);
+	    HttpEntity entity = response.getEntity();
+	    Scanner s = new Scanner(entity.getContent());
+	    return s.hasNextLine() ? s.nextLine() : "";
+	}
+	catch (Exception e) { System.out.println(e); }
+	return "";
     }
 
     public InputStream getRawResult() throws Exception
     {
-	HttpGet request = new HttpGet(getQuery());
-	HttpClient client = HttpClientBuilder.create().build();
-	HttpResponse response = client.execute(request);
-	HttpEntity entity = response.getEntity();
-	return entity.getContent();
+	System.out.println(getQuery());
+	try{
+	    HttpGet request = new HttpGet(getQuery());
+	    request.setConfig(RequestConfig.custom().setProxy(new HttpHost("162.105.74.252", 8338, "http")).build());
+	    //HttpClient client = HttpClientBuilder.create().build();
+	    HttpClient client = getInsecureClient();
+	    HttpResponse response = client.execute(request);
+	    HttpEntity entity = response.getEntity();
+	    return entity.getContent();
+	}
+	catch (Exception e) { System.out.println(e); }
+	return null;
     }
 }
 
