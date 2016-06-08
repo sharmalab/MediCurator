@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class DetectImage
 {
-    public static DuplicatePair[] detect(Cache<UUID, Image> origin) throws Exception
+    public static DuplicatePair[] detect(Cache<UUID, Image> origin)
     {
 	//string - md5, md5 --- UUID 
 	Map<String, List<Map.Entry<String, UUID>>> candidates = 

@@ -10,13 +10,27 @@ public class DuplicatePair implements Serializable
 
     public DuplicatePair(UUID a, UUID b)
     {
-	first = a;
-	second = b;
+	if (a.compareTo(b) <= 0)
+	{
+	    first = a;
+	    second = b;
+	}
+	else
+	{
+	    first = b;
+	    second = a;
+	}
     }
 
-    public boolean equals(DuplicatePair another)
+    public boolean equals(Object obj)
     {
-	return first.equals(another.first) && second.equals(another.second) || first.equals(another.second) && second.equals(another.first);
+	DuplicatePair another = (DuplicatePair)obj;
+	return first.equals(another.first) && second.equals(another.second);
+    }
+    
+    public int hashCode()
+    {
+	return first.hashCode() ^ second.hashCode();
     }
 }
 

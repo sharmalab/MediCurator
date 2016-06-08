@@ -16,7 +16,7 @@ import java.io.Serializable;
 
 public class DupDetect
 {
-    public static DuplicatePair[] detect(UUID[] imgIDs) throws Exception
+    public static DuplicatePair[] detect(UUID[] imgIDs)
     {
 	Cache<UUID, Image> idCache = Manager.get().getCache(UUID.randomUUID().toString());
 	for (UUID id : imgIDs)
@@ -56,15 +56,23 @@ public class DupDetect
 	DuplicatePair[] candidateMeta = DetectMetadata.detect(idCache);
 	DuplicatePair[] candidateImg = DetectImage.detect(idCache);
 
-	Cache<DuplicatePair, Integer> candidate = Manager.get().getCache(UUID.randomUUID().toString());
+	System.out.println("Metadata candidates :");
 	for (DuplicatePair dp : candidateMeta)
 	{
-	    candidate.put(dp, 0);
+	    System.out.println(ID.getImage(dp.first).getPath() + " == " + ID.getImage(dp.second).getPath());
 	}
+	System.out.println("Image candidates :");
 	for (DuplicatePair dp : candidateImg)
 	{
-	    candidate.put(dp, 0);
+	    System.out.println(ID.getImage(dp.first).getPath() + " == " + ID.getImage(dp.second).getPath());
 	}
+
+	Cache<DuplicatePair, Integer> candidate = Manager.get().getCache(UUID.randomUUID().toString());
+	HashSet<DuplicatePair> dedup = new HashSet<DuplicatePair>();
+
+	for (DuplicatePair dp : candidateMeta) candidate.put(dp, 0);
+	for (DuplicatePair dp : candidateImg) candidate.put(dp, 0);
+
 	List<DuplicatePair> result = candidate.keySet().parallelStream()
 	    .filter(dp -> Verify.verify(ID.getImage(dp.first), ID.getImage(dp.second)))
 	    .collect(CacheCollectors.serializableCollector(() -> Collectors.toList()));

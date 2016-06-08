@@ -1,16 +1,22 @@
 package edu.emory.bmi.medicurator.infinispan;
 
 import org.infinispan.manager.DefaultCacheManager;
+import java.io.IOException;
 
 public class Manager
 {
     private static DefaultCacheManager manager = null;
 
-    public static DefaultCacheManager get() throws Exception
+    public static DefaultCacheManager get()
     {   
-	if (manager == null)
+	while (manager == null)
 	{
-	    manager = new DefaultCacheManager("infinispan.xml");
+	    try {
+		manager = new DefaultCacheManager("infinispan.xml");
+	    }
+	    catch (IOException e) {
+		System.out.println("[ERROR] get DefaultCacheManager error -- " + e);
+	    }
 	}
 	return manager;
     }

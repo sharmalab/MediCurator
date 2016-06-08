@@ -24,7 +24,7 @@ public class TciaDataSource extends DataSource
 	}
 	return rootDataSet;
     }
-    public UUID retrieveDataSet(Metadata meta) throws Exception
+    public UUID retrieveDataSet(Metadata meta)
     {
 	TciaHierarchy hier = TciaHierarchy.ROOT;
 	Metadata[] metas = null;

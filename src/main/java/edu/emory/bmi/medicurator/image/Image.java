@@ -27,7 +27,6 @@ public abstract class Image
 	md5 = null;
     }
 
-    // compute md5
     public String getHashCode()
     {
 	if (md5 == null)
@@ -42,7 +41,10 @@ public abstract class Image
 		while(md5.length() < 32) md5 = "0" + md5;
 		store();
 	    }
-	    catch (Exception e) {}
+	    catch (Exception e) {
+		System.out.println("[ERROR] when calculate md5 hashcode " + path + " -- " + e);
+		md5 = UUID.randomUUID().toString();
+	    }
 	}
 	return md5;
     }
@@ -57,7 +59,6 @@ public abstract class Image
 	return getMetadata().getID();
     }
     
-    //update the infinispan data
     protected void store()
     {
 	ID.setImage(imageID, this);

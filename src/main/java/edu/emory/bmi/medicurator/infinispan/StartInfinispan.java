@@ -4,7 +4,7 @@ import org.infinispan.manager.DefaultCacheManager;
 
 public class StartInfinispan
 {
-    public static void main(String args[]) throws Exception
+    public static void main(String args[])
     {
 	DefaultCacheManager manager = Manager.get();
     }

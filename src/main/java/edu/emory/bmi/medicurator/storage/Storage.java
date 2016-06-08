@@ -4,7 +4,7 @@ import java.io.InputStream;
 
 public interface Storage
 {
-    boolean saveToPath(String path, InputStream in) throws Exception;
-    InputStream loadFromPath(String path) throws Exception;
+    boolean saveToPath(String path, InputStream in);
+    InputStream loadFromPath(String path);
 }
 

@@ -26,19 +26,33 @@ public abstract class DataSet
 	metaID = null;
     }
 
-    public boolean download() throws Exception
+    public boolean download()
     {
-	if (downloaded) return true;
-	getImages();
-	if (getSubsets() != null)
+	if (downloaded) 
 	{
-	    for (UUID id : getSubsets())
-	    {
-		ID.getDataSet(id).download();
-	    }
+	    System.out.println("*********** Dataset " + getID() + " already downloaded");
+	    return true;
 	}
-	downloaded = true;
-	store();
+	try {
+	    getImages();
+	    if (getSubsets() != null)
+	    {
+		for (UUID id : getSubsets())
+		{
+		    if (!ID.getDataSet(id).download())
+		    {
+			return false;
+		    }
+		}
+	    }
+	    downloaded = true;
+	    store();
+	}
+	catch (Exception e) {
+	    System.out.println("[ERROR] when downloading dataset " + getID() + " -- " + e);
+	    return false;
+	}
+	System.out.println("Downloaded Dataset " + getID());
 	return true;
     }
 

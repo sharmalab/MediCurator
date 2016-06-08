@@ -57,37 +57,39 @@ public class TciaQuery
 
     }
 
-    public String getResult() throws Exception
+    public String getResult()
     {
-	System.out.println(getQuery());
 	try{
 	    HttpGet request = new HttpGet(getQuery());
-	    request.setConfig(RequestConfig.custom().setProxy(new HttpHost("162.105.74.252", 8338, "http")).build());
-	    //HttpClient client = HttpClientBuilder.create().build();
-	    HttpClient client = getInsecureClient();
+	    //request.setConfig(RequestConfig.custom().setProxy(new HttpHost("162.105.74.252", 8338, "http")).build());
+	    HttpClient client = HttpClientBuilder.create().build();
+	    //HttpClient client = getInsecureClient();
 	    HttpResponse response = client.execute(request);
 	    HttpEntity entity = response.getEntity();
 	    Scanner s = new Scanner(entity.getContent());
 	    return s.hasNextLine() ? s.nextLine() : "";
 	}
-	catch (Exception e) { System.out.println(e); }
-	return "";
+	catch (Exception e) { 
+	    System.out.println("[ERROR] when excute TCIA TESTful API " + getQuery() + " -- " + e);
+	    return "";
+	}
     }
 
-    public InputStream getRawResult() throws Exception
+    public InputStream getRawResult()
     {
-	System.out.println(getQuery());
 	try{
 	    HttpGet request = new HttpGet(getQuery());
-	    request.setConfig(RequestConfig.custom().setProxy(new HttpHost("162.105.74.252", 8338, "http")).build());
-	    //HttpClient client = HttpClientBuilder.create().build();
-	    HttpClient client = getInsecureClient();
+	    //request.setConfig(RequestConfig.custom().setProxy(new HttpHost("162.105.74.252", 8338, "http")).build());
+	    HttpClient client = HttpClientBuilder.create().build();
+	    //HttpClient client = getInsecureClient();
 	    HttpResponse response = client.execute(request);
 	    HttpEntity entity = response.getEntity();
 	    return entity.getContent();
 	}
-	catch (Exception e) { System.out.println(e); }
-	return null;
+	catch (Exception e) {
+	    System.out.println("[ERROR] when excute TCIA TESTful API " + getQuery() + " -- " + e);
+	    return null;
+	}
     }
 }
 

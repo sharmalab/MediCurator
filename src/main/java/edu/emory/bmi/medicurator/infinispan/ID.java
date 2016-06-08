@@ -1,7 +1,7 @@
 package edu.emory.bmi.medicurator.infinispan;
 
 import edu.emory.bmi.medicurator.general.*;
-import edu.emory.bmi.medicurator.image.*;
+import edu.emory.bmi.medicurator.image.Image;
 
 import org.infinispan.Cache;
 import java.util.UUID;
@@ -17,15 +17,22 @@ public class ID
 
     static
     {
-	try {
-	maptoUser = Manager.get().getCache("maptoUser");
-	maptoDataSource = Manager.get().getCache("maptoDataSource");
-	maptoReplicaSet = Manager.get().getCache("maptoReplicaSet");
-	maptoDataSet = Manager.get().getCache("maptoDataSet");
-	maptoMetadata = Manager.get().getCache("maptoMetadata");
-	maptoImage = Manager.get().getCache("maptoImage");
+	boolean successful = false;
+	while (!successful)
+	{
+	    try {
+		maptoUser = Manager.get().getCache("maptoUser");
+		maptoDataSource = Manager.get().getCache("maptoDataSource");
+		maptoReplicaSet = Manager.get().getCache("maptoReplicaSet");
+		maptoDataSet = Manager.get().getCache("maptoDataSet");
+		maptoMetadata = Manager.get().getCache("maptoMetadata");
+		maptoImage = Manager.get().getCache("maptoImage");
+		successful = true;
+	    }
+	    catch (Exception e) {
+		System.out.println("[ERROR] get Infinispan Cache error -- " + e);
+	    }
 	}
-	catch (Exception e) {System.out.println(e);}
     }
 
     public static User getUser(UUID id) { return maptoUser.get(id); }

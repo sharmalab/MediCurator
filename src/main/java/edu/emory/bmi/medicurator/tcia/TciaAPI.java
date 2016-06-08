@@ -14,7 +14,7 @@ public class TciaAPI
     public static Metadata[] parseJSON(String json)
     {
 	JSONArray arr = new JSONArray(json);
-	if (arr.length() == 0) return null;
+	if (arr == null || arr.length() == 0) return new Metadata[0];
 	Metadata[] metas = new Metadata[arr.length()];
 	for (int i = 0; i < arr.length(); ++i)
 	{
@@ -28,13 +28,13 @@ public class TciaAPI
 	}
 	return metas;
     }
-    public static Metadata[] getCollectionValues() throws Exception
+    public static Metadata[] getCollectionValues()
     {
 	TciaQuery query = new TciaQuery("getCollectionValues");
 	String result = query.getResult();
 	return parseJSON(result);
     }
-    public static Metadata[] getModalityValues(String collection, String bodyPartExamined) throws Exception
+    public static Metadata[] getModalityValues(String collection, String bodyPartExamined)
     {
 	TciaQuery query = new TciaQuery("getModalityValues");
 	query.param("Collection", collection);
@@ -42,7 +42,7 @@ public class TciaAPI
 	String result = query.getResult();
 	return parseJSON(result);
     }
-    public static Metadata[] getBodyPartValues(String collection, String modality) throws Exception
+    public static Metadata[] getBodyPartValues(String collection, String modality)
     {
 	TciaQuery query = new TciaQuery("getBodyPartValues");
 	query.param("Collection", collection);
@@ -50,7 +50,7 @@ public class TciaAPI
 	String result = query.getResult();
 	return parseJSON(result);
     }
-    public static Metadata[] getManufacturerValues(String collection, String modality) throws Exception
+    public static Metadata[] getManufacturerValues(String collection, String modality)
     {
 	TciaQuery query = new TciaQuery("getManufacturerValues");
 	query.param("Collection", collection);
@@ -58,14 +58,14 @@ public class TciaAPI
 	String result = query.getResult();
 	return parseJSON(result);
     }
-    public static Metadata[] getPatient(String collection) throws Exception
+    public static Metadata[] getPatient(String collection)
     {
 	TciaQuery query = new TciaQuery("getPatient");
 	query.param("Collection", collection);
 	String result = query.getResult();
 	return parseJSON(result);
     }
-    public static Metadata[] getPatientsByModality(String collection, String modality) throws Exception
+    public static Metadata[] getPatientsByModality(String collection, String modality)
     {
 	TciaQuery query = new TciaQuery("getPatientByModality");
 	query.param("Collection", collection);
@@ -73,7 +73,7 @@ public class TciaAPI
 	String result = query.getResult();
 	return parseJSON(result);
     }
-    public static Metadata[] getPatientStudy(String collection, String patientID, String studyInstanceUID) throws Exception
+    public static Metadata[] getPatientStudy(String collection, String patientID, String studyInstanceUID)
     {
 	TciaQuery query = new TciaQuery("getPatientStudy");
 	query.param("Collection", collection);
@@ -82,7 +82,7 @@ public class TciaAPI
 	String result = query.getResult();
 	return parseJSON(result);
     }
-    public static Metadata[] getSeries(String collection, String patientID, String studyInstanceUID, String seriesInstanceUID , String modality, String bodyPartExamined, String manufacturerModelName, String manufacturer) throws Exception
+    public static Metadata[] getSeries(String collection, String patientID, String studyInstanceUID, String seriesInstanceUID , String modality, String bodyPartExamined, String manufacturerModelName, String manufacturer)
     {
 	TciaQuery query = new TciaQuery("getSeries");
 	query.param("Collection", collection);
@@ -96,20 +96,20 @@ public class TciaAPI
 	String result = query.getResult();
 	return parseJSON(result);
     }
-    public static Metadata[] getSeriesSize(String seriesInstanceUID) throws Exception
+    public static Metadata[] getSeriesSize(String seriesInstanceUID)
     {
 	TciaQuery query = new TciaQuery("getSeriesSize");
 	query.param("SeriesInstanceUID", seriesInstanceUID);
 	String result = query.getResult();
 	return parseJSON(result);
     }
-    public static InputStream getImage(String seriesInstanceUID) throws Exception
+    public static InputStream getImage(String seriesInstanceUID)
     {
 	TciaQuery query = new TciaQuery("getImage");
 	query.param("SeriesInstanceUID", seriesInstanceUID);
 	return query.getRawResult();
     }
-    public static Metadata[] newPatientsInCollection(String date, String collection) throws Exception
+    public static Metadata[] newPatientsInCollection(String date, String collection)
     {
 	TciaQuery query = new TciaQuery("newPatientsInCollection");
 	query.param("Date", date);
@@ -117,7 +117,7 @@ public class TciaAPI
 	String result = query.getResult();
 	return parseJSON(result);
     }
-    public static Metadata[] newStudiesInPatientCollection(String date, String collection, String patientID) throws Exception
+    public static Metadata[] newStudiesInPatientCollection(String date, String collection, String patientID)
     {
 	TciaQuery query = new TciaQuery("newStudiesInPatientCollection");
 	query.param("Date", date);
@@ -126,14 +126,14 @@ public class TciaAPI
 	String result = query.getResult();
 	return parseJSON(result);
     }
-    public static Metadata[] getSOPInstanceUIDs(String seriesInstanceUID) throws Exception
+    public static Metadata[] getSOPInstanceUIDs(String seriesInstanceUID)
     {
 	TciaQuery query = new TciaQuery("getSOPInstanceUIDs");
 	query.param("SeriesInstanceUID", seriesInstanceUID);
 	String result = query.getResult();
 	return parseJSON(result);
     }
-    public static InputStream getSingleImage(String seriesInstanceUID, String SOPInstanceUID) throws Exception
+    public static InputStream getSingleImage(String seriesInstanceUID, String SOPInstanceUID)
     {
 	TciaQuery query = new TciaQuery("getSingleImage");
 	query.param("SeriesInstanceUID", seriesInstanceUID);

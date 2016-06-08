@@ -18,29 +18,29 @@ class ParseMetadata implements Serializable, Function<Map.Entry<UUID, Metadata>,
     public Map.Entry<String, UUID>[] apply(Map.Entry<UUID, Metadata> e)
     {
 	try {
-	Cache<String, Integer> order = Manager.get().getCache("metaOrder");
-	Metadata meta = e.getValue();
-	String[] keys = meta.getKeys();
+	    Cache<String, Integer> order = Manager.get().getCache("metaOrder");
+	    Metadata meta = e.getValue();
+	    String[] keys = meta.getKeys();
 
-	ArrayList<Map.Entry<String, UUID>> result = new ArrayList<Map.Entry<String, UUID>>();
-	for (int r = 0; r < 5; ++r)
-	{
-	    int choose = -1;
-	    for (int i = 1; i < keys.length; ++i)
+	    ArrayList<Map.Entry<String, UUID>> result = new ArrayList<Map.Entry<String, UUID>>();
+	    for (int r = 0; r < 5; ++r)
 	    {
-		if (!keys[i].equals("") && (choose == -1 || order.get(keys[i]) > order.get(keys[choose])))
-		    choose = i;
+		int choose = -1;
+		for (int i = 1; i < keys.length; ++i)
+		{
+		    if (!keys[i].equals("") && (choose == -1 || order.get(keys[i]) > order.get(keys[choose])))
+			choose = i;
+		}
+		result.add(new SimpleEntry<String, UUID>(keys[choose] + meta.get(keys[choose]), e.getKey()));
+		keys[choose] = "";
 	    }
-	    result.add(new SimpleEntry<String, UUID>(keys[choose] + meta.get(keys[choose]), e.getKey()));
-	    keys[choose] = "";
-	}
-	return (SimpleEntry<String, UUID>[])result.toArray(new SimpleEntry[0]);
+	    return (SimpleEntry<String, UUID>[])result.toArray(new SimpleEntry[0]);
 
 	}
 	catch (Exception x) {
-	    System.out.println(x);
+	    System.out.println("[ERROR] when ParseMetadata " + e.getKey() + " -- " + x);
 	}
-	return null;
+	return new SimpleEntry[0];
     }
 }
 
@@ -48,7 +48,6 @@ public class DetectMetadata
 {
     public static DuplicatePair[] detect(Cache<UUID, Image> origin)
     {
-	//different K-V at most five 
 	Map<String, List<Map.Entry<String, UUID>>> candidates = 
 	    origin.entrySet().parallelStream()
 	    .map((Serializable & Function<Map.Entry<UUID, Image>, Map.Entry<UUID, Metadata>>)

@@ -34,7 +34,9 @@ public class Verify
 		return true;
 	    }
 	}
-	catch (Exception e) {}
+	catch (Exception e) {
+	    System.out.println("[ERROR] when Verify image " + a.getPath() + " and image " + b.getPath() + " -- " + e);
+	}
 	return false;
     }
 }
