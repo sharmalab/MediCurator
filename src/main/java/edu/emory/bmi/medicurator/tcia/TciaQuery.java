@@ -63,7 +63,7 @@ public class TciaQuery
 	    HttpGet request = new HttpGet(getQuery());
 	    //request.setConfig(RequestConfig.custom().setProxy(new HttpHost("162.105.74.252", 8338, "http")).build());
 	    HttpClient client = HttpClientBuilder.create().build();
-	    //HttpClient client = getInsecureClient();
+	    HttpClient client = getInsecureClient();
 	    HttpResponse response = client.execute(request);
 	    HttpEntity entity = response.getEntity();
 	    Scanner s = new Scanner(entity.getContent());
@@ -81,7 +81,7 @@ public class TciaQuery
 	    HttpGet request = new HttpGet(getQuery());
 	    //request.setConfig(RequestConfig.custom().setProxy(new HttpHost("162.105.74.252", 8338, "http")).build());
 	    HttpClient client = HttpClientBuilder.create().build();
-	    //HttpClient client = getInsecureClient();
+	    HttpClient client = getInsecureClient();
 	    HttpResponse response = client.execute(request);
 	    HttpEntity entity = response.getEntity();
 	    return entity.getContent();
