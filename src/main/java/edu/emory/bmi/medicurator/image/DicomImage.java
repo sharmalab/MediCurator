@@ -13,8 +13,13 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.util.*;
 
+/*
+ * Implementation of DICOM image type
+ * Use dcm4che library to parse the image data
+ */
 public class DicomImage extends Image
 {
+    //parse the Metadata of a DICOM image
     public Metadata getMetadata()
     {
 	if (metaID == null)
@@ -41,6 +46,8 @@ public class DicomImage extends Image
 	return ID.getMetadata(metaID);
     }
 
+    //get the raw image data as a byte array
+    //return the bytes from DICOM's Pixel Data
     public byte[] getRawImage()
     {
 	InputStream in = getImage();
@@ -58,12 +65,14 @@ public class DicomImage extends Image
 	return new byte[0];
     }
 
+    //create a new DicomImage with its path
     public DicomImage(String path)
     {
 	super(path);
 	ID.setImage(getID(), this);
     }
 
+    //read image data from its path
     private InputStream getImage()
     {
 	return storage.loadFromPath(path);

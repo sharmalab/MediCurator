@@ -7,8 +7,15 @@ import java.security.MessageDigest;
 import java.util.UUID;
 import java.math.BigInteger;
 
+/*
+ * Image is the actual data to be managed in MediCurator.
+ * Each Image consists of a Metadata and a byte[] as its raw data.
+ * Each Image has a relative path as its storage location.
+ * We calculate the MD5 value as hash code for comparing two Images' raw data.
+ */
 public abstract class Image
 {
+    //the unique ID used to retrieve the Image inside MediCurator
     private UUID imageID = UUID.randomUUID();
     public UUID getID() { return imageID; }
 
