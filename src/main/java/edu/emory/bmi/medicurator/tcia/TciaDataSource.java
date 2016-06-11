@@ -4,10 +4,15 @@ import edu.emory.bmi.medicurator.infinispan.ID;
 import edu.emory.bmi.medicurator.general.*;
 import java.util.UUID;
 
+/*
+ * Implementation of TCIA DataSource, return a ROOT level TciaDataSet
+ * Also support retrieve a TciaDataSet with Metadata
+ */
 public class TciaDataSource extends DataSource
 {
     private UUID rootDataSet;
 
+    //DataSource type is 'tcia'
     public TciaDataSource()
     {
 	super("tcia");
@@ -15,6 +20,7 @@ public class TciaDataSource extends DataSource
 	store();
     }
 
+    //get a ROOT TciaDataSet
     public UUID getRootDataSet() 
     {
 	if (rootDataSet == null)
@@ -24,6 +30,13 @@ public class TciaDataSource extends DataSource
 	}
 	return rootDataSet;
     }
+
+
+    //retrieve a DataSet of specified Metadata
+    //if the Metadata contains key 'SeriesInstanceUID' then return a SERIES DataSet
+    //else if the Metadata contains key 'StudyInstanceUID' then return a STUDY DataSet
+    //  ...
+    //  ...
     public UUID retrieveDataSet(Metadata meta)
     {
 	TciaHierarchy hier = TciaHierarchy.ROOT;

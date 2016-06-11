@@ -11,11 +11,14 @@ import org.infinispan.stream.CacheCollectors;
 import java.util.stream.Collectors;
 
 
+/*
+ * Get the candidate duplicate pair from raw image data
+ */
 public class DetectImage
 {
     public static DuplicatePair[] detect(Cache<UUID, Image> origin)
     {
-	//string - md5, md5 --- UUID 
+	//calculate by comparing two images' hash code
 	Map<String, List<Map.Entry<String, UUID>>> candidates = 
 	    origin.entrySet().parallelStream()
 	    .map((Serializable & Function<Map.Entry<UUID, Image>, Map.Entry<String, UUID>>) 

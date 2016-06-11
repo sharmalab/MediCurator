@@ -9,8 +9,12 @@ import java.util.Scanner;
 import java.io.InputStream;
 import java.util.Iterator;
 
+/*
+ * Implementation of TCIA RESTful API
+ */
 public class TciaAPI
 {
+    //parse json to a Metadata array
     public static Metadata[] parseJSON(String json)
     {
 	JSONArray arr = new JSONArray(json);

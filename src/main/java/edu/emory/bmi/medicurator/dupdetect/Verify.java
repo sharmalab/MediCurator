@@ -6,6 +6,11 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.function.Function;
 import java.util.*;
 
+/*
+ * Verify if a candidate pair is real near-duplicate pair
+ * (1) if the raw image data's hash code equals, it is true
+ * (2) if there are less than five different metadata items, it is true
+ */
 public class Verify
 {
     public static boolean verify(Image a, Image b)

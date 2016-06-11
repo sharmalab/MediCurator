@@ -11,9 +11,9 @@ package edu.emory.bmi.medicurator;
 
 public class Constants
 {
-    public static String DATA_BASE_DIR = "/tmp/medicurator/";
-    public static String TCIA_API_KEY = "";
+    public static String DATA_BASE_DIR = Constants.class.getResource("/").getPath();
+    public static String TCIA_API_KEY = "ba449283-f680-4dc8-9df4-69545cc33f94";
     public static String PROXY_HOST = null;
-    public static int PROXY_PORT = null;
+    public static Integer PROXY_PORT = null;
 }
 

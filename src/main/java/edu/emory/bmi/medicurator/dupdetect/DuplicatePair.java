@@ -3,6 +3,9 @@ package edu.emory.bmi.medicurator.dupdetect;
 import java.util.UUID;
 import java.io.Serializable;
 
+/*
+ * The near-duplicate pair data type. Consists of two image IDs.
+ */
 public class DuplicatePair implements Serializable
 {
     public UUID first;

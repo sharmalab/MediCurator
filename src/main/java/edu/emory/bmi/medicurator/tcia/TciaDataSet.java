@@ -8,6 +8,11 @@ import java.util.UUID;
 import java.util.ArrayList;
 import java.util.zip.*;
 
+/*
+ * Implementation of TCIA DataSet
+ * Each hierarchy has a keyword, such as PatientID of patient or StudyInstanceUID of study
+ * Series contains Images, other hierarchies don't have Image
+ */
 public class TciaDataSet extends DataSet
 {
     private static Storage storage = LocalStorage.getInstance();
@@ -17,8 +22,10 @@ public class TciaDataSet extends DataSet
     private UUID[] subsets;
     private UUID[] images;
 
+    //TODO: check if the downloaded DataSet out of date
     public boolean updated() { return true; }
 
+    //create a TciaDataSet with specified Metadata
     public TciaDataSet(TciaHierarchy hierarchy, UUID parent, Metadata meta)
     {
 	super("tcia");
@@ -28,7 +35,7 @@ public class TciaDataSet extends DataSet
 	this.parent = parent;
 	subsets = null;
 	images = null;
-	switch (hierarchy)
+	switch (hierarchy)   // get keyword
 	{
 	    case ROOT:
 		keyword = "";
@@ -54,6 +61,7 @@ public class TciaDataSet extends DataSet
 	return parent;
     }
 
+    // create this DataSet's subsets
     private void makeSubsets(Metadata[] metas, TciaHierarchy subHierarchy)
     {
 	if (metas.length == 0) return;
@@ -65,6 +73,7 @@ public class TciaDataSet extends DataSet
 	}
     }
 
+    // get ID array of subsets
     public UUID[] getSubsets()
     {
 	if (subsets == null && hierarchy != TciaHierarchy.SERIES)
@@ -95,6 +104,8 @@ public class TciaDataSet extends DataSet
 	return subsets;
     }
 
+    //if this is a Series DataSet, download the images of the Series
+    //the downloaded images are compressed with zip, unzip them and store
     public UUID[] getImages()
     {
 	if (images == null)	
@@ -138,6 +149,7 @@ public class TciaDataSet extends DataSet
 	return keyword;
     }
 
+    //get a subset with specified keyword
     public UUID getSubset(String keyword)
     {
 	for (UUID u : getSubsets())

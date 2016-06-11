@@ -1,5 +1,9 @@
 package edu.emory.bmi.medicurator.tcia;
 
+/*
+ * The hierarchy of TCIA dat
+ * root -> collection -> patient -> study -> series -> image
+ */
 public enum TciaHierarchy
 {
     ROOT,
@@ -9,3 +13,4 @@ public enum TciaHierarchy
     SERIES,
     IMAGE
 }
+

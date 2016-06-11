@@ -13,6 +13,9 @@ import org.infinispan.stream.CacheCollectors;
 import java.util.stream.Collectors;
 
 
+/*
+ * Generate five tuples of most diverse key-value and image ID
+ */
 class ParseMetadata implements Serializable, Function<Map.Entry<UUID, Metadata>, Map.Entry<String, UUID>[]>
 {
     public Map.Entry<String, UUID>[] apply(Map.Entry<UUID, Metadata> e)
@@ -44,6 +47,15 @@ class ParseMetadata implements Serializable, Function<Map.Entry<UUID, Metadata>,
     }
 }
 
+/*
+ * Get the candidate near-duplicate pairs from Images' Metadata
+ * For each image, choose five most diverse keys of its Metadata to compare with other images
+ * If two images have same value on one key of the five, they are considered to be near-duplicate
+ * Algorithm:
+ *      For each image D, find the five most diverse keys of it, generate tuples (k1+v1,D),(k2+v2,D)...(k5+v5,D)
+ *           k means key, v means value,    ki+vi is a String concatenate
+ *      Compare if two tuples with the same S : (S,D1), (S,D2), generate near-duplicate pair (D1,D2)
+ */
 public class DetectMetadata
 {
     public static DuplicatePair[] detect(Cache<UUID, Image> origin)
@@ -56,6 +68,7 @@ public class DetectMetadata
 	    .flatMap((Serializable & Function<Map.Entry<String, UUID>[], Stream<Map.Entry<String, UUID>>>) Arrays::stream)
 	    .collect(CacheCollectors.serializableCollector(() -> Collectors.groupingBy(e -> e.getKey())));
 
+	//make pair
 	ArrayList<DuplicatePair> result = new ArrayList<DuplicatePair>();
 	for (Map.Entry<String, List<Map.Entry<String, UUID>>> e : candidates.entrySet())
 	{

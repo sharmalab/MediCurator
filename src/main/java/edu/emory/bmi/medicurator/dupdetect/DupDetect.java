@@ -14,16 +14,25 @@ import org.infinispan.Cache;
 import org.infinispan.stream.CacheCollectors;
 import java.io.Serializable;
 
+
+/*
+ * Detect near-duplicate pairs of given images
+ * Input: an array of Image ID
+ * Output: an array of near-duplicate pairs of image ID
+ */
 public class DupDetect
 {
     public static DuplicatePair[] detect(UUID[] imgIDs)
     {
+	//create a Cache to store image IDs
 	Cache<UUID, Image> idCache = Manager.get().getCache(UUID.randomUUID().toString());
 	for (UUID id : imgIDs)
 	{
 	    idCache.put(id, ID.getImage(id));
 	}
-	//almost entropy largest, have the most different values 
+
+	//find the most diverse keys of images' Metadata
+	//count the number of different values of each key
 	Map<String, Integer> order = idCache.entrySet().parallelStream()
 	    .map((Serializable & Function<Map.Entry<UUID, Image>, Map.Entry<String, String>[]>) e ->
 		    {
@@ -47,12 +56,15 @@ public class DupDetect
 		    })
 	    .collect(Collectors.toMap(Map.Entry<String, Integer>::getKey, Map.Entry<String, Integer>::getValue));
 
+	//store the number of different values as a key's order
+	//the larger order means more diversity
 	Cache<String, Integer> metaOrder = Manager.get().getCache("metaOrder");
 	for (Map.Entry<String, Integer> e : order.entrySet())
 	{
 	    metaOrder.put(e.getKey(), e.getValue());
 	}
 
+	//get candidate pairs from both Metadata and image data
 	DuplicatePair[] candidateMeta = DetectMetadata.detect(idCache);
 	DuplicatePair[] candidateImg = DetectImage.detect(idCache);
 
@@ -73,6 +85,7 @@ public class DupDetect
 	for (DuplicatePair dp : candidateMeta) candidate.put(dp, 0);
 	for (DuplicatePair dp : candidateImg) candidate.put(dp, 0);
 
+	//verify if the candidate pair is a real near-duplicate pair
 	List<DuplicatePair> result = candidate.keySet().parallelStream()
 	    .filter(dp -> Verify.verify(ID.getImage(dp.first), ID.getImage(dp.second)))
 	    .collect(CacheCollectors.serializableCollector(() -> Collectors.toList()));
