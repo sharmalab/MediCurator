@@ -1,12 +1,21 @@
 package edu.emory.bmi.medicurator.storage;
 
+import edu.emory.bmi.medicurator.Constants;
 import java.io.*;
 
+
+/*
+ * Implementation of local disk storage.
+ * Specify the baseDir then everything will save to [baseDir]+[relative path]
+ */
 public class LocalStorage implements Storage
 {
-    private static String baseDir = LocalStorage.class.getResource("/").getPath();
+    //get path prefix from Constants
+    private static String baseDir = Constants.DATA_BASE_DIR;
     private static Storage storage = new LocalStorage();
 
+    //save data from InputStream to a relative path
+    //requried parent directories will be created if not exists
     public boolean saveToPath(String path, InputStream in)
     {
 	try {
@@ -32,6 +41,7 @@ public class LocalStorage implements Storage
 	return false;
     }
 
+    //get the InputStream of a file with specified relative path
     public InputStream loadFromPath(String path)
     { 
 	InputStream in = null;

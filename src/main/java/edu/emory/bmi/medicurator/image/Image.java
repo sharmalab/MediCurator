@@ -19,14 +19,25 @@ public abstract class Image
     private UUID imageID = UUID.randomUUID();
     public UUID getID() { return imageID; }
 
+    //a storage instance used to store data locally
     protected Storage storage = LocalStorage.getInstance();
+
+    //the relative path of the Image
     protected String path;
+
+    //the md5 hash value of the image raw data
     protected String md5;
+
+    //the ID of the Image's Metadata
     protected UUID metaID;
 
+    //get Metadata
     public abstract Metadata getMetadata();
+
+    //get raw data
     public abstract byte[] getRawImage();
 
+    //create a new Image with its relative path
     public Image(String path)
     {
 	this.path = path;
@@ -34,6 +45,7 @@ public abstract class Image
 	md5 = null;
     }
 
+    //calculate hash code of image raw data
     public String getHashCode()
     {
 	if (md5 == null)
@@ -56,16 +68,19 @@ public abstract class Image
 	return md5;
     }
 
+    //get relative path
     public String getPath()
     {
 	return path;
     }
 
+    //get Metadata ID
     public UUID getMetaID()
     {
 	return getMetadata().getID();
     }
     
+    //store the Image to Infinispan
     protected void store()
     {
 	ID.setImage(imageID, this);

@@ -6,8 +6,13 @@ import edu.emory.bmi.medicurator.image.Image;
 import org.infinispan.Cache;
 import java.util.UUID;
 
+/*
+ * ID keeps a map of global unique id to the data instance in Infinispan
+ * ID supports User, ReplicaSet, DataSource, DataSet, Metadata and Image
+ */
 public class ID
 {
+    //Infinispan Caches
     private static Cache<UUID, User> maptoUser;
     private static Cache<UUID, DataSource> maptoDataSource;
     private static Cache<UUID, ReplicaSet> maptoReplicaSet;
@@ -15,6 +20,7 @@ public class ID
     private static Cache<UUID, Metadata> maptoMetadata;
     private static Cache<UUID, Image> maptoImage;
 
+    //initialize the Infinispan Caches
     static
     {
 	boolean successful = false;
@@ -34,6 +40,9 @@ public class ID
 	    }
 	}
     }
+
+
+    //get or store data instance with id to Infinispan
 
     public static User getUser(UUID id) { return maptoUser.get(id); }
 
