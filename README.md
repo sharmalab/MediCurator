@@ -23,8 +23,8 @@ It is expected to have the TCIA_API_KEY set in the Constants.java to build with 
 ## Dependencies
 This project depends on the below major projects.
 
-* Infinispan
+* Infinispan 8.2 stable
+* dcm4che 3
 * Apache HTTP Client
-* dcm4che
 
 
