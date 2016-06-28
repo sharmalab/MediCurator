@@ -24,7 +24,7 @@ Run webapp
 
 It is expected to have the TCIA_API_KEY set in the Constants.java to build with tests.
 
-The webapp runs at http://localhost:22333
+The webapp runs at http://localhost:2222
 
 
 ## Dependencies
