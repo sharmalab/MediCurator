@@ -5,16 +5,17 @@ import java.util.Scanner;
 
 import edu.emory.bmi.medicurator.Constants;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.HttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpHost;
+import org.apache.http.client.*;
+import org.apache.http.impl.client.*;
+import org.apache.http.*;
 import org.apache.http.conn.ssl.*;
+import org.apache.http.auth.*;
 import javax.net.ssl.*;
 import java.security.cert.*;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.HttpEntity;
 import java.io.InputStream;
+import java.net.*;
 
 /*
  * Build query of TCIA RESTful API, send query and get result
@@ -43,7 +44,7 @@ public class TciaQuery
     public void param(String key, String value)
     {
 	if (value == null) return;
-	query.append(key + "=" + value + "&");
+	query.append(key + "=" + URLEncoder.encode(value) + "&");
     }
 
     //get the query URL
@@ -62,8 +63,15 @@ public class TciaQuery
 		}
 		}).build();
 	SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext);
-	return HttpClientBuilder.create().setSSLSocketFactory(sslsf).build();
-
+	HttpHost proxy = new HttpHost(Constants.PROXY_HOST, Constants.PROXY_PORT, "http");
+	Credentials credentials = new UsernamePasswordCredentials(Constants.PROXY_USERNAME, Constants.PROXY_PASSWORD);
+	CredentialsProvider credsProvider = new BasicCredentialsProvider();
+	credsProvider.setCredentials(AuthScope.ANY, credentials);
+	return HttpClientBuilder.create()
+	    .setSSLSocketFactory(sslsf)
+	    .setProxy(proxy)
+	    .setDefaultCredentialsProvider(credsProvider)
+	    .build();
     }
 
     //send query and get text result
@@ -71,15 +79,13 @@ public class TciaQuery
     {
 	try{
 	    HttpGet request = new HttpGet(getQuery());
-	    if (Constants.PROXY_HOST != null && Constants.PROXY_PORT != null)
-	    {
-		request.setConfig(RequestConfig.custom().setProxy(new HttpHost(Constants.PROXY_HOST, Constants.PROXY_PORT, "http")).build());
-	    }
 	    HttpClient client = getInsecureClient();
 	    HttpResponse response = client.execute(request);
 	    HttpEntity entity = response.getEntity();
 	    Scanner s = new Scanner(entity.getContent());
-	    return s.hasNextLine() ? s.nextLine() : "";
+	    String str = s.nextLine();
+	    System.out.println(str);
+	    return str;
 	}
 	catch (Exception e) { 
 	    System.out.println("[ERROR] when excute TCIA TESTful API " + getQuery() + " -- " + e);
@@ -92,10 +98,6 @@ public class TciaQuery
     {
 	try{
 	    HttpGet request = new HttpGet(getQuery());
-	    if (Constants.PROXY_HOST != null && Constants.PROXY_PORT != null)
-	    {
-		request.setConfig(RequestConfig.custom().setProxy(new HttpHost(Constants.PROXY_HOST, Constants.PROXY_PORT, "http")).build());
-	    }
 	    HttpClient client = getInsecureClient();
 	    HttpResponse response = client.execute(request);
 	    HttpEntity entity = response.getEntity();

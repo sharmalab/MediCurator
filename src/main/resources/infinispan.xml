@@ -7,13 +7,14 @@
 	<transport stack="external-file" />
 	<jmx duplicate-domains="true" />
 
-	<distributed-cache name="maptoUser"/>
-	<distributed-cache name="maptoDataSource"/>
-	<distributed-cache name="maptoReplicaSet"/>
-	<distributed-cache name="maptoDataSet"/>
-	<distributed-cache name="maptoMetadata"/>
-	<distributed-cache name="maptoImage"/>
-	<distributed-cache name="metaOrder"/>
+	<replicated-cache name="maptoUser"/>
+	<replicated-cache name="maptoDataSource"/>
+	<replicated-cache name="maptoReplicaSet"/>
+	<replicated-cache name="maptoDataSet"/>
+	<replicated-cache name="maptoMetadata"/>
+	<replicated-cache name="maptoImage"/>
+	<replicated-cache name="maptoUserID"/>
+	<replicated-cache name="metaOrder"/>
     </cache-container>
 </infinispan>
 

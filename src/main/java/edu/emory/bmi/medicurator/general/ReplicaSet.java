@@ -19,18 +19,29 @@ public class ReplicaSet implements Serializable
     //store the IDs of DataSets in this ReplicaSet
     private HashSet<UUID> dataSets;
 
+    //the name of this ReplicaSet
+    private String name;
+
     //create a new empty ReplicaSet
-    public ReplicaSet()
+    public ReplicaSet(String name)
     {
+	this.name = name;
 	dataSets = new HashSet<UUID>();
 	store();
     }
 
     //make a copy of another ReplicaSet
-    public ReplicaSet(ReplicaSet another)
+    public ReplicaSet(String name, ReplicaSet another)
     {
+	this.name = name;
 	dataSets = new HashSet<UUID>(another.dataSets);
 	store();
+    }
+
+    //get ReplicaSet's name
+    public String getName()
+    {
+	return name;
     }
 
     //add a DataSet
@@ -43,7 +54,7 @@ public class ReplicaSet implements Serializable
     //get the array of IDs of DataSets in the ReplicaSet
     public UUID[] getDataSets()
     {
-	return (UUID[])dataSets.toArray();
+	return (UUID[])dataSets.toArray(new UUID[0]);
     }
 
     //remove a DataSet from this ReplicaSet

@@ -38,19 +38,19 @@ public class TciaDataSet extends DataSet
 	switch (hierarchy)   // get keyword
 	{
 	    case ROOT:
-		keyword = "";
+		keyword = "TCIA";
 		break;
 	    case COLLECTION:
-		keyword = meta.get("Collection");
+		keyword = "Collection: " + meta.get("Collection");
 		break;
 	    case PATIENT:
-		keyword = meta.get("PatientID");
+		keyword = "PatientID: " + meta.get("PatientID");
 		break;
 	    case STUDY:
-		keyword = meta.get("StudyInstanceUID");
+		keyword = "StudyInstanceUID: " + meta.get("StudyInstanceUID");
 		break;
 	    case SERIES:
-		keyword = meta.get("SeriesInstanceUID");
+		keyword = "SeriesInstanceUID: " + meta.get("SeriesInstanceUID");
 		break;
 	}
 	store();

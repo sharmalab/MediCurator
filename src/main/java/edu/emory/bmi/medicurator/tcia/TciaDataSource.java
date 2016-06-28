@@ -10,7 +10,7 @@ import java.util.UUID;
  */
 public class TciaDataSource extends DataSource
 {
-    private UUID rootDataSet;
+    private static UUID rootDataSet = null;
 
     //DataSource type is 'tcia'
     public TciaDataSource()

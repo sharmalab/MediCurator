@@ -21,6 +21,13 @@ public class User implements Serializable
 
     //store the IDs of ReplicaSets of this User
     private HashSet<UUID> replicaSets;
+
+    public static User lookup(String username)
+    {
+	UUID userid = ID.getUserID(username);
+	if (userid == null) return null;
+	return ID.getUser(userid);
+    }
     
     //create a new User with his username and password
     public User(String username, String password)
@@ -60,7 +67,7 @@ public class User implements Serializable
     //get the array of IDs of ReplicaSets of the User
     public UUID[] getReplicaSets()
     {
-	return (UUID[])replicaSets.toArray();
+	return (UUID[])replicaSets.toArray(new UUID[0]);
     }
 
     //add a ReplicaSet into this User
@@ -81,6 +88,7 @@ public class User implements Serializable
     public void store()
     {
 	ID.setUser(userID, this);
+	ID.setUserID(username, userID);
     }
 }
 

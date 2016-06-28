@@ -41,6 +41,9 @@ public abstract class DataSet
     //check if the downloaded DataSet is out of date.
     public abstract boolean updated();
 
+    //get a String to describe this DataSet
+    public abstract String getKeyword();
+
     //create a new DataSet
     public DataSet(String datasetType)
     {
