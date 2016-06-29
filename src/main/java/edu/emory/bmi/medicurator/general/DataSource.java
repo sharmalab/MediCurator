@@ -1,14 +1,15 @@
 package edu.emory.bmi.medicurator.general;
 
 import edu.emory.bmi.medicurator.infinispan.ID;
-import java.util.UUID;
+import java.util.*;
+import java.io.*;
 
 /*
  * MediCurator can manage data of heterogeneous data sources
  * The hypothesis is that the data in each data source is managed as a tree hierarchy
  * Each tree node is a DataSet and DataSource keeps the root DataSet of the tree.
  */
-public abstract class DataSource
+public abstract class DataSource implements Serializable
 {
     //the unique ID used to retrieve the DataSource inside MediCurator
     private UUID dataSourceID = UUID.randomUUID();

@@ -20,6 +20,7 @@ public class ID
     private static Cache<UUID, Metadata> maptoMetadata;
     private static Cache<UUID, Image> maptoImage;
     private static Cache<String, UUID> maptoUserID;
+    private static Cache<String, UUID> maptoDataSourceID;
 
     //initialize the Infinispan Caches
     static
@@ -35,6 +36,7 @@ public class ID
 		maptoMetadata = Manager.get().getCache("maptoMetadata");
 		maptoImage = Manager.get().getCache("maptoImage");
 		maptoUserID = Manager.get().getCache("maptoUserID");
+		maptoDataSourceID = Manager.get().getCache("maptoDataSourceID");
 		successful = true;
 	    }
 	    catch (Exception e) {
@@ -43,8 +45,8 @@ public class ID
 	}
     }
 
-
     //get or store data instance with id to Infinispan
+    public static void start() {}
 
     public static User getUser(UUID id) { return maptoUser.get(id); }
 
@@ -74,5 +76,8 @@ public class ID
     
     public static void setUserID(String username, UUID userid) { maptoUserID.put(username, userid); }
 
+    public static UUID getDataSourceID(String dataSource) { return maptoDataSourceID.get(dataSource); }
+    
+    public static void setDataSourceID(String dataSource, UUID dataSourceID) { maptoDataSourceID.put(dataSource, dataSourceID); }
 }
 

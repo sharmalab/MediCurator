@@ -6,6 +6,7 @@ import edu.emory.bmi.medicurator.storage.*;
 import java.security.MessageDigest;
 import java.util.UUID;
 import java.math.BigInteger;
+import java.io.*;
 
 /*
  * Image is the actual data to be managed in MediCurator.
@@ -13,7 +14,7 @@ import java.math.BigInteger;
  * Each Image has a relative path as its storage location.
  * We calculate the MD5 value as hash code for comparing two Images' raw data.
  */
-public abstract class Image
+public abstract class Image implements Serializable
 {
     //the unique ID used to retrieve the Image inside MediCurator
     private UUID imageID = UUID.randomUUID();

@@ -9,7 +9,7 @@ public class StartInfinispan
 {
     public static void main(String args[])
     {
-	DefaultCacheManager manager = Manager.get();
+	ID.start();
     }
 }
 

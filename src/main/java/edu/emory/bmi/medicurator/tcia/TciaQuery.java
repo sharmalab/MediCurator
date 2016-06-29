@@ -63,15 +63,21 @@ public class TciaQuery
 		}
 		}).build();
 	SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext);
-	HttpHost proxy = new HttpHost(Constants.PROXY_HOST, Constants.PROXY_PORT, "http");
-	Credentials credentials = new UsernamePasswordCredentials(Constants.PROXY_USERNAME, Constants.PROXY_PASSWORD);
-	CredentialsProvider credsProvider = new BasicCredentialsProvider();
-	credsProvider.setCredentials(AuthScope.ANY, credentials);
-	return HttpClientBuilder.create()
-	    .setSSLSocketFactory(sslsf)
-	    .setProxy(proxy)
-	    .setDefaultCredentialsProvider(credsProvider)
-	    .build();
+	HttpClientBuilder builder = HttpClientBuilder.create();
+	builder.setSSLSocketFactory(sslsf);
+	if (Constants.PROXY_HOST != null && Constants.PROXY_PORT != null)
+	{
+	    HttpHost proxy = new HttpHost(Constants.PROXY_HOST, Constants.PROXY_PORT, "http");
+	    builder.setProxy(proxy);
+	}
+	if (Constants.PROXY_USERNAME != null && Constants.PROXY_PASSWORD != null)
+	{
+	    Credentials credentials = new UsernamePasswordCredentials(Constants.PROXY_USERNAME, Constants.PROXY_PASSWORD);
+	    CredentialsProvider credsProvider = new BasicCredentialsProvider();
+	    credsProvider.setCredentials(AuthScope.ANY, credentials);
+	    builder.setDefaultCredentialsProvider(credsProvider);
+	}
+	return builder.build();
     }
 
     //send query and get text result

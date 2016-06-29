@@ -26,6 +26,12 @@ It is expected to have the TCIA_API_KEY set in the Constants.java to build with 
 
 The webapp runs at http://localhost:2222/Index
 
+You may want to run
+
+    mvn exec:java -Dexec.mainClass="edu.emory.bmi.medicurator.infinispan.StartInfinispan" 
+
+first so that data you hava stored beforehand won't be lost although the web server has been closed.
+
 
 ## Dependencies
 This project depends on the below major projects.

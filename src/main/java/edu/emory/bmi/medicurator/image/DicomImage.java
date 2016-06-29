@@ -9,8 +9,7 @@ import org.dcm4che2.data.DicomObject;
 import org.dcm4che2.data.DicomElement;
 import org.dcm4che2.data.Tag;
 
-import java.io.InputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 /*

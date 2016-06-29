@@ -8,11 +8,10 @@ import java.io.*;
  * Implementation of local disk storage.
  * Specify the baseDir then everything will save to [baseDir]+[relative path]
  */
-public class LocalStorage implements Storage
+public class LocalStorage implements Storage, Serializable
 {
     //get path prefix from Constants
-    private static String baseDir = Constants.DATA_BASE_DIR;
-    private static Storage storage = new LocalStorage();
+    private  String baseDir = Constants.DATA_BASE_DIR;
 
     //save data from InputStream to a relative path
     //requried parent directories will be created if not exists
@@ -56,7 +55,7 @@ public class LocalStorage implements Storage
 
     public static Storage getInstance()
     {
-	return storage;
+	return new LocalStorage();
     }
 }
 

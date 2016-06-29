@@ -15,7 +15,7 @@ import java.util.zip.*;
  */
 public class TciaDataSet extends DataSet
 {
-    private static Storage storage = LocalStorage.getInstance();
+    private Storage storage = LocalStorage.getInstance();
     private TciaHierarchy hierarchy;
     private String keyword;
     private UUID parent;

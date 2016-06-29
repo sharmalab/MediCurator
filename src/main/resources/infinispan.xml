@@ -14,6 +14,7 @@
 	<replicated-cache name="maptoMetadata"/>
 	<replicated-cache name="maptoImage"/>
 	<replicated-cache name="maptoUserID"/>
+	<replicated-cache name="maptoDataSourceID"/>
 	<replicated-cache name="metaOrder"/>
     </cache-container>
 </infinispan>

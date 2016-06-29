@@ -4,6 +4,7 @@ import edu.emory.bmi.medicurator.image.Image;
 import edu.emory.bmi.medicurator.infinispan.ID;
 import java.util.UUID;
 import java.util.zip.*;
+import java.io.*;
 
 /*
  * A DataSet is a node of a Tree.
@@ -14,7 +15,7 @@ import java.util.zip.*;
  * A DataSet has a flag 'downloaded'. One DataSet won't be downloaded twice.
  * Also see DataSource for more information.
  */
-public abstract class DataSet
+public abstract class DataSet implements Serializable
 {
     //the unique ID used to retrieve the DataSet inside MediCurator
     private UUID dataSetID = UUID.randomUUID();
@@ -24,7 +25,7 @@ public abstract class DataSet
     private UUID metaID;
 
     //the type of the DataSet, similar to DataSource's type
-    protected final String datasetType;
+    protected String datasetType;
 
     //recored whether the DataSet has been downloaded
     public  boolean downloaded;
