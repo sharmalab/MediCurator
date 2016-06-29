@@ -24,7 +24,7 @@ Run webapp
 
 It is expected to have the TCIA_API_KEY set in the Constants.java to build with tests.
 
-The webapp runs at http://localhost:2222
+The webapp runs at http://localhost:2222/Index
 
 
 ## Dependencies
@@ -33,5 +33,5 @@ This project depends on the below major projects.
 * Infinispan 8.2 stable
 * dcm4che 3
 * Apache HTTP Client
-
+* Tomcat 7
 

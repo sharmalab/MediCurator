@@ -26,17 +26,35 @@ public class ShowReplicaSet extends Page
 	{
 	    dataSetID = UUID.fromString(request.getParameter("datasetID"));
 	}
+	UUID deleteID = null;
+	if (request.getParameter("deleteID") != null)
+	{
+	    deleteID = UUID.fromString(request.getParameter("deleteID"));
+	}
 	
 	ReplicaSet replicaSet = ID.getReplicaSet(replicaSetID);
 	if (dataSetID != null)
 	{
 	    replicaSet.putDataSet(dataSetID);
 	}
+	if (deleteID != null)
+	{
+	    replicaSet.removeDataSet(deleteID);
+	}
 	out.println("<h1>" + replicaSet.getName() + "</h1>");
 	for (UUID datasetID : replicaSet.getDataSets())
 	{
 	    DataSet dataSet = ID.getDataSet(datasetID);
-	    out.println("<p>" + dataSet.getKeyword() + "</p>");
+	    out.println("<p>" + dataSet.getKeyword());
+	    out.println("<input type=\"button\" onclick=\"location='/ShowReplicaSet?replicasetID=" + 
+			replicaSetID + "&deleteID=" + datasetID + "'\" value=\"Deletet\" />");
+
+	    if(!dataSet.downloaded)
+		out.println("<input type=\"button\" onclick=\"location='/Download?datasetID=" + dataSet.getID()+ "'\" value=\"Download\">");
+	    else
+		out.println("<span style=\"color:solid grey\">downloaded</span>");
+	    out.println("</p>");
+
 	}
 	out.println("<input type=\"button\" onclick=\"location='/SelectDataSet?replicasetID=" + 
 			replicaSetID.toString() + "'\" value=\"Add DataSet\" />");

@@ -27,7 +27,7 @@ public abstract class DataSet
     protected final String datasetType;
 
     //recored whether the DataSet has been downloaded
-    private boolean downloaded;
+    public  boolean downloaded;
 
     //get the ID of parent DataSet
     public abstract UUID getParent();
@@ -58,10 +58,11 @@ public abstract class DataSet
     {
 	if (downloaded && updated())
 	{
-	    System.out.println("*********** Dataset " + getID() + " already downloaded");
+	    System.out.println("Dataset " + getID() + " already downloaded");
 	    return true;
 	}
 	try {
+	    downloaded = true;
 	    getImages();
 	    if (getSubsets() != null)
 	    {
@@ -69,14 +70,15 @@ public abstract class DataSet
 		{
 		    if (!ID.getDataSet(id).download())
 		    {
+			downloaded = false;
 			return false;
 		    }
 		}
 	    }
-	    downloaded = true;
 	    store();
 	}
 	catch (Exception e) {
+	    downloaded = false;
 	    System.out.println("[ERROR] when downloading dataset " + getID() + " -- " + e);
 	    return false;
 	}
