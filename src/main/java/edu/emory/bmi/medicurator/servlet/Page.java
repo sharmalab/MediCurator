@@ -14,7 +14,7 @@ import java.util.*;
 public abstract class Page extends HttpServlet
 {
     protected String title = "Medicurator";
-    protected String info = "Contact :Contact: chen1ru@pku.edu.cn";
+    protected String info = "Contact: chen1ru@pku.edu.cn";
 
     protected String header()
     {
