@@ -8,6 +8,7 @@ Set the TCIA_API_KEY, DATA_BASE_DIR in ./src/main/java/edu/emory/bmi/medicurator
 
 Also set PROXY_HOST, PROXY_PORT if necessary.
 
+The user can choose use HdfsStorage or LocalStorage by changing STORAGE (hdfs/local) in Constants.java.
 To use HDFS, you should config HDFS_URI and HDFS_BASEDIR in Constants.java.
 For example, HDFS_URI = "hdfs://localhost:9000/"  and  HDFS_BASEDIR = "/user/xxx/medicurator/"
 
