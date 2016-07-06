@@ -15,7 +15,7 @@ import java.util.zip.*;
  */
 public class TciaDataSet extends DataSet
 {
-    private Storage storage = new HdfsStorage();
+    private Storage storage = GetStorage.get();
     private TciaHierarchy hierarchy;
     private String keyword;
     private UUID parent;

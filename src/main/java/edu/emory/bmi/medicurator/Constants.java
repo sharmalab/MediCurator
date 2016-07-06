@@ -16,6 +16,7 @@ import edu.emory.bmi.medicurator.tcia.*;
 
 public class Constants
 {
+    public static String STORAGE = "hdfs"; // or "local"
     public static String LOCAL_BASEDIR = Constants.class.getResource("/").getPath();
     public static String HDFS_URI = null;//"hdfs://162.105.203.138:9000/";
     public static String HDFS_BASEDIR = null;//"/user/chenyr/medicurator/";

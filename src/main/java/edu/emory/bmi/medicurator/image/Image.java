@@ -21,7 +21,7 @@ public abstract class Image implements Serializable
     public UUID getID() { return imageID; }
 
     //a storage instance used to store data locally
-    protected Storage storage = new HdfsStorage();
+    protected Storage storage = GetStorage.get();
 
     //the relative path of the Image
     protected String path;
