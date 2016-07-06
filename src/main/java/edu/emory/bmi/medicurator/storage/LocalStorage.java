@@ -11,7 +11,7 @@ import java.io.*;
 public class LocalStorage implements Storage, Serializable
 {
     //get path prefix from Constants
-    private  String baseDir = Constants.DATA_BASE_DIR;
+    private  String baseDir = Constants.LOCAL_BASEDIR;
 
     //save data from InputStream to a relative path
     //requried parent directories will be created if not exists

@@ -1,4 +1,4 @@
-pckage edu.emory.bmi.medicurator;
+package edu.emory.bmi.medicurator;
 
 import java.util.ArrayList;
 import edu.emory.bmi.medicurator.general.*;
