@@ -52,10 +52,5 @@ public class LocalStorage implements Storage, Serializable
 	}
 	return in;
     }
-
-    public static Storage getInstance()
-    {
-	return new LocalStorage();
-    }
 }
 

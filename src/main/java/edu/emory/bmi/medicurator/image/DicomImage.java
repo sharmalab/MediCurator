@@ -1,6 +1,6 @@
 package edu.emory.bmi.medicurator.image;
 
-import edu.emory.bmi.medicurator.storage.LocalStorage;
+import edu.emory.bmi.medicurator.storage.HdfsStorage;
 import edu.emory.bmi.medicurator.general.*;
 import edu.emory.bmi.medicurator.infinispan.ID;
 

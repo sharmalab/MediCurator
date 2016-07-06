@@ -21,7 +21,7 @@ public abstract class Image implements Serializable
     public UUID getID() { return imageID; }
 
     //a storage instance used to store data locally
-    protected Storage storage = LocalStorage.getInstance();
+    protected Storage storage = new HdfsStorage();
 
     //the relative path of the Image
     protected String path;
@@ -53,7 +53,7 @@ public abstract class Image implements Serializable
 	{
 	    try {
 		byte[] data = getRawImage();
-		MessageDigest md = MessageDigest.getInstance("MD5");
+		MessageDigest md = MessageDigest.getInstance("md5");
 		md.reset();
 		md.update(data);
 		BigInteger code = new BigInteger(1, md.digest());
