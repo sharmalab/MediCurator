@@ -50,7 +50,7 @@ public class HdfsStorage implements Storage, Serializable
 	InputStream in = null;
 	try{
 	    Configuration conf = new Configuration(); 
-	    FileSystem hdfs = FileSystem.get(new URI("hdfs://162.105.203.138:9000/"), conf);
+	    FileSystem hdfs = FileSystem.get(new URI(Constants.HDFS_URI), conf);
 	    Path hdfspath = new Path(hdfsPath+path);
 	    if (!hdfs.exists(hdfspath)) { 
 		System.out.println("File does not exists"); 
