@@ -13,6 +13,12 @@ public class LocalStorage implements Storage, Serializable
     //get path prefix from Constants
     private  String baseDir = Constants.LOCAL_BASEDIR;
 
+    public LocalStorage() {}
+    public LocalStorage(String baseDir)
+    {
+	this.baseDir = baseDir;
+    }
+
     //save data from InputStream to a relative path
     //requried parent directories will be created if not exists
     public boolean saveToPath(String path, InputStream in)
