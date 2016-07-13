@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import edu.emory.bmi.medicurator.general.*;
 import edu.emory.bmi.medicurator.infinispan.*;
 import edu.emory.bmi.medicurator.tcia.*;
+import edu.emory.bmi.medicurator.local.*;
 
 /*
  * Constant values and settings in MediCurator.
@@ -16,16 +17,16 @@ import edu.emory.bmi.medicurator.tcia.*;
 
 public class Constants
 {
-    public static String STORAGE = "hdfs"; // or "local"
+    public static String STORAGE = "local"; // or "local"
     public static String LOCAL_BASEDIR = Constants.class.getResource("/").getPath();
     public static String HDFS_URI = null;//"hdfs://162.105.203.138:9000/";
     public static String HDFS_BASEDIR = null;//"/user/chenyr/medicurator/";
 
     public static String TCIA_API_KEY = "ba449283-f680-4dc8-9df4-69545cc33f94";
-    public static String PROXY_HOST = null;//"proxy1.megvii-inc.com";
-    public static Integer PROXY_PORT = null;//25;
-    public static String PROXY_USERNAME= null;//"megvii";
-    public static String PROXY_PASSWORD = null;//"face++";
+    public static String PROXY_HOST = "proxy1.megvii-inc.com";
+    public static Integer PROXY_PORT = 25;
+    public static String PROXY_USERNAME= "megvii";
+    public static String PROXY_PASSWORD = "face++";
     public static ArrayList<DataSource> DATA_SOURCES = new ArrayList<DataSource>();
 
     static
@@ -36,6 +37,13 @@ public class Constants
 	    ID.setDataSourceID("tcia", tcia.getID());
 	}
 	DATA_SOURCES.add(ID.getDataSource(ID.getDataSourceID("tcia")));
+
+	if (ID.getDataSourceID("test") == null)
+	{
+	    DataSource local = new LocalDataSource("test", "/home/chenyr/data/image");
+	    ID.setDataSourceID("test", local.getID());
+	}
+	DATA_SOURCES.add(ID.getDataSource(ID.getDataSourceID("test")));
     }
 }
 
