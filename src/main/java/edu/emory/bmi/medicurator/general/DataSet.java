@@ -28,7 +28,8 @@ public abstract class DataSet implements Serializable
     protected String datasetType;
 
     //recored whether the DataSet has been downloaded
-    public  boolean downloaded;
+    public boolean downloaded;
+    public  boolean self_downloaded;
 
     //get the ID of parent DataSet
     public abstract UUID getParent();
@@ -50,7 +51,32 @@ public abstract class DataSet implements Serializable
     {
 	this.datasetType = datasetType;
 	downloaded = false;
+	self_downloaded = false;
 	metaID = null;
+    }
+
+    private void update_downloaded()
+    {
+	if (self_downloaded == false)
+	{
+	    downloaded = false;
+	}
+	else
+	{
+	    downloaded = true;
+	    if (getSubsets() != null)
+	    {
+		for (UUID id : getSubsets())
+		{
+		    if (!ID.getDataSet(id).downloaded)
+		    {
+			downloaded = false;
+			break;
+		    }
+		}
+	    }
+	}
+	store();
     }
 
     //download a DataSet. first download the Images, then download the subsets recursively.
@@ -64,7 +90,11 @@ public abstract class DataSet implements Serializable
 	}
 	try {
 	    downloaded = true;
-	    getImages();
+	    if (self_download() == false)
+	    {
+		downloaded = false;
+		return false;
+	    }
 	    if (getSubsets() != null)
 	    {
 		for (UUID id : getSubsets())
@@ -84,6 +114,89 @@ public abstract class DataSet implements Serializable
 	    return false;
 	}
 	System.out.println("Download Dataset " + getID());
+	return true;
+    }
+
+    public boolean self_download()
+    {
+	try {
+	    if (self_downloaded == true)
+		return true;
+	    self_downloaded = true;
+	    getImages(); 
+	    UUID id = getID();
+	    while (id != null)
+	    {
+		DataSet ds = ID.getDataSet(id);
+		ds.update_downloaded();
+		if (ds.downloaded == false)
+		    break;
+		id = ds.getParent();
+	    }
+	    return true;
+	}
+	catch (Exception e) {
+	    self_downloaded = false;
+	    System.out.println("[ERROR] when downloading Images of dataset " + getID() + " -- " + e);
+	    return false;
+	}
+    }
+
+    private boolean _delete()
+    {
+	if (downloaded == true)
+	{
+	    self_delete();
+	    UUID[] subsets = getSubsets();
+	    if (subsets != null)
+	    {
+		for (UUID s : subsets)
+		{
+		    ID.getDataSet(s)._delete();
+		}
+	    }
+	    store();
+	}
+	return true;
+    }
+
+    public boolean delete()
+    {
+	if (downloaded == true)
+	{
+	    _delete();
+	    store();
+	    UUID par = getParent();
+	    while (par != null)
+	    {
+		DataSet parent = ID.getDataSet(par);
+		if (parent.downloaded == false) 
+		    break;
+		parent.downloaded = false;
+		parent.store();
+		par = parent.getParent();
+	    }
+	}
+	return true;
+    }
+
+    public boolean self_delete()
+    {
+	if (self_downloaded == true)
+	{
+	    self_downloaded = false;
+	    downloaded = false;
+	    store();
+	    UUID par = getParent();
+	    while (par != null)
+	    {
+		DataSet parent = ID.getDataSet(par);
+		if (parent.downloaded == false) break;
+		parent.downloaded = false;
+		parent.store();
+		par = parent.getParent();
+	    }
+	}
 	return true;
     }
 

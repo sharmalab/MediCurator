@@ -55,7 +55,7 @@ public abstract class Page extends HttpServlet
 
     protected abstract void printSection(HttpServletRequest request, HttpServletResponse response, PrintWriter out);
 
-    public void doGet( HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException 
+    public void doGet( HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException 
     {
 	response.setContentType("text/html;charset=UTF-8");
 	PrintWriter out = response.getWriter();

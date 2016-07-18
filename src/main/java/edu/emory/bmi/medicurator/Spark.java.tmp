@@ -1,0 +1,69 @@
+package edu.emory.bmi.medicurator;
+
+import edu.emory.bmi.medicurator.servlet.*;
+import edu.emory.bmi.medicurator.RestfulAPI;
+
+import static spark.Spark.get;
+import static spark.Spark.post;
+import spark.Request;
+import spark.Response;
+import spark.Route;
+
+public class Webapp
+{
+    public static void main( String[] args) {
+	get("/api/signup", (req, res) -> {
+		String username = req.queryParams("username");
+		String password = req.queryParams("password");
+		return RestfulAPI.signup(username, password);
+		});
+	get("/api/login", (req, res) -> {
+		String username = req.queryParams("username");
+		String password = req.queryParams("password");
+		return RestfulAPI.login(username, password);
+		});
+	get("/api/getReplicaSets", (req, res) -> {
+		String userid = req.queryParams("userid");
+		return RestfulAPI.getReplicaSets(userid);
+		});
+	get("/api/createReplicaSet", (req, res) -> {
+		String userid = req.queryParams("userid");
+		String replicaName = req.queryParams("replicaName");
+		return RestfulAPI.createReplicaSet(userid, replicaName);
+		});
+	get("/api/getDataSets", (req, res) -> {
+		String replicasetID = req.queryParams("replicasetID");
+		return RestfulAPI.getDataSets(replicasetID);
+		});
+	get("/api/addDataSet", (req, res) -> {
+		String replicasetID = req.queryParams("replicasetID");
+		String datasetID = req.queryParams("datasetID");
+		return RestfulAPI.addDataSet(replicasetID, datasetID);
+		});
+	get("/api/rmDataSet", (req, res) -> {
+		String replicasetID = req.queryParams("replicasetID");
+		String datasetID = req.queryParams("datasetID");
+		return RestfulAPI.rmDataSet(replicasetID, datasetID);
+		});
+	get("/api/getRootDatasets", (req, res) -> {
+		return RestfulAPI.getRootDatasets();
+		});
+	get("/api/getSubSets", (req, res) -> {
+		String datasetID = req.queryParams("datasetID");
+		return RestfulAPI.getSubSets(datasetID);
+		});
+	get("/api/downloadDataSets", (req, res) -> {
+		String datasetID = req.queryParams("datasetID");
+		return RestfulAPI.downloadDataSets(datasetID);
+		});
+	get("/api/downloadOneDataSet", (req, res) -> {
+		String datasetID = req.queryParams("datasetID");
+		return RestfulAPI.downloadOneDataSet(datasetID);
+		});
+	get("/api/deleteDataSet", (req, res) -> {
+		String datasetID = req.queryParams("datasetID");
+		return RestfulAPI.deleteDataSet(datasetID);
+		});
+    }
+}
+

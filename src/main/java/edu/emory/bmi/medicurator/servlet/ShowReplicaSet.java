@@ -47,14 +47,17 @@ public class ShowReplicaSet extends Page
 	    DataSet dataSet = ID.getDataSet(datasetID);
 	    out.println("<p>" + dataSet.getKeyword());
 	    out.println("<input type=\"button\" onclick=\"location='/ShowReplicaSet?replicasetID=" + 
-			replicaSetID + "&deleteID=" + datasetID + "'\" value=\"Deletet\" />");
+			replicaSetID + "&deleteID=" + datasetID + "'\" value=\"Remove\" />");
 
 	    if(!dataSet.downloaded)
-		out.println("<input type=\"button\" onclick=\"location='/Download?datasetID=" + dataSet.getID()+ "'\" value=\"Download\">");
+		out.println("<input type=\"button\" onclick=\"location='/Download?datasetID=" + dataSet.getID() + "'\" value=\"Download All\">");
 	    else
-		out.println("<span style=\"color:solid grey\">downloaded</span>");
+		out.println("<input type=\"button\" onclick=\"location='/Download?deleteID=" + dataSet.getID() + "'\" value=\"Delete All\">");
+	    if(!dataSet.self_downloaded)
+		out.println("<input type=\"button\" onclick=\"location='/Download?one_datasetID=" + dataSet.getID() + "'\" value=\"Download It\">");
+	    else
+		out.println("<input type=\"button\" onclick=\"location='/Download?one_deleteID=" + dataSet.getID() + "'\" value=\"Delete It\">");
 	    out.println("</p>");
-
 	}
 	out.println("<input type=\"button\" onclick=\"location='/SelectDataSet?replicasetID=" + 
 			replicaSetID.toString() + "'\" value=\"Add DataSet\" />");
