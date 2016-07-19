@@ -36,6 +36,28 @@ You may want to run
 
 first so that data you hava stored beforehand won't be lost although the web server has been closed.
 
+Run Restful API
+--------
+
+    mvn exec:java -Dexec.mainClass="edu.emory.bmi.medicurator.api.ServerAPI"
+    
+    API:
+    http://localhost:4567/signup?username=***&password=*** 
+    http://localhost:4567/login?username=***&password=***
+    http://localhost:4567/getReplicaSets?userid=***
+    http://localhost:4567/createReplicaSets?userid=***&replicaName=***
+    http://localhost:4567/getDataSets?replicasetID=***
+    http://localhost:4567/addDataSet?replicasetID=***&datasetID=***
+    http://localhost:4567/removeDataSet?replicasetID=***&datasetID=***
+    http://localhost:4567/getRootDataSets
+    http://localhost:4567/getSubsets?datasetID=***
+    http://localhost:4567/downloadDataSets?datasetID=***
+    http://localhost:4567/downloadOneDataSets?datasetID=***
+    http://localhost:4567/deleteDataSets?datasetID=***
+    http://localhost:4567/deleteOneDataSet?datasetID=***
+
+    Extend or leverage the exposed APIs, or simply test using a REST client such as the Postman Chrome application.
+
 
 ## Dependencies
 This project depends on the below major projects.

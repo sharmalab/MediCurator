@@ -29,16 +29,6 @@
 	    <path>/</path>
 	 </configuration>
     </plugin>
-    <!--
-    <plugin>
-      <groupId>org.codehaus.mojo</groupId>
-      <artifactId>exec-maven-plugin</artifactId>
-      <version>1.2.1</version>
-      <configuration>
-	<mainClass>edu.emory.bmi.medicurator.RestfulAPI</mainClass>
-      </configuration>
-    </plugin>
-    -->
     </plugins>  
   </build>  
 
@@ -102,13 +92,11 @@
 	<artifactId>hadoop-client</artifactId>  
 	<version>2.7.2</version>  
     </dependency>  
-    <!--
     <dependency>
 	<groupId>com.sparkjava</groupId>
 	<artifactId>spark-core</artifactId>
 	<version>2.5</version>
     </dependency>
-    -->
     </dependencies>
 </project>
 
