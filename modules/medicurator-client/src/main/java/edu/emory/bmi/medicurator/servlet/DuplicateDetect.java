@@ -79,7 +79,7 @@ public class DuplicateDetect extends Page
 	    }
 	    out.println("<input type=\"submit\" value=\"Detect\" />");
 	    out.println("</form>");
-	}
+	    }
     }
 }
 

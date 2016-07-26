@@ -67,6 +67,11 @@ public class ServerAPI
 		String datasetID = req.queryParams("datasetID");
 		return RestfulAPI.deleteOneDataSet(datasetID);
 		});
+	get("/duplicateSets", ( req, res) -> {
+		String replicasetID1 = req.queryParams("replicasetID1");
+		String replicasetID2 = req.queryParams("replicasetID2");
+		return RestfulAPI.DuplicateDetect(replicasetID1,replicasetID2);
+	});
     }
 }
 

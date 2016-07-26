@@ -55,7 +55,8 @@ Run Restful API
     http://localhost:4567/downloadOneDataSets?datasetID=***
     http://localhost:4567/deleteDataSets?datasetID=***
     http://localhost:4567/deleteOneDataSet?datasetID=***
-
+    http://localhost:4567/duplicateSets?replicasetID1=***&replicasetID2=***
+    
     Extend or leverage the exposed APIs, or simply test using a REST client such as the Postman Chrome application.
 
 

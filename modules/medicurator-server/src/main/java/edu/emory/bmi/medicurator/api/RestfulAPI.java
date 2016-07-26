@@ -6,7 +6,7 @@ import edu.emory.bmi.medicurator.infinispan.*;
 import edu.emory.bmi.medicurator.image.*;
 import edu.emory.bmi.medicurator.storage.*;
 import edu.emory.bmi.medicurator.Constants;
-
+import edu.emory.bmi.medicurator.dupdetect.*;
 import java.lang.StringBuilder;
 import java.io.*;
 import java.util.*;
@@ -22,9 +22,9 @@ public class RestfulAPI
 
 	public JSON()
 	{
-	   json = new StringBuilder(); 
-	   json.append("{");
-	   exist = false;
+	    json = new StringBuilder(); 
+	    json.append("{");
+	    exist = false;
 	}
 
 	public JSON(String name, String value)
@@ -226,6 +226,57 @@ public class RestfulAPI
 	{
 	    return (new JSON("Status","Failed")).get();
 	}
+    }
+
+    public static  void add(ArrayList<UUID> images ,DataSet dataset)
+    {
+	if (dataset.self_downloaded)
+	{
+	    for(UUID id : dataset.getImages())
+	    {
+		images.add(id);
+	    }
+	}
+	if (dataset.getSubsets() != null)
+       {
+            for(UUID id: dataset.getSubsets())
+             {
+                 add(images, ID.getDataSet(id));
+             }
+         }
+    }
+
+    public static  String DuplicateDetect(String ReplicasetID1, String ReplicasetID2)
+    {
+	UUID replicasetID1 = UUID.fromString(ReplicasetID1);
+	UUID replicasetID2 = UUID.fromString(ReplicasetID2);
+	ArrayList<UUID> images = new ArrayList<UUID>();
+	ReplicaSet replicaset1 = ID.getReplicaSet(replicasetID1);
+	ReplicaSet replicaset2 = ID.getReplicaSet(replicasetID2);
+	for(UUID ids: replicaset1.getDataSets())
+	{
+	    add(images, ID.getDataSet(ids));
+	}
+	for(UUID ids: replicaset2.getDataSets())
+	{
+	    add(images, ID.getDataSet(ids));
+	}
+	DuplicatePair[] dpairs = DupDetect.detect(images.toArray(new UUID[0]));
+        
+	String[] a = new String[dpairs.length];
+        int i = 0;
+        for (DuplicatePair pair : dpairs)
+        {
+
+            Image img1 = ID.getImage(pair.first);
+            Image img2 = ID.getImage(pair.second);
+            JSON json = new JSON();
+            int num = i + 1;
+	    json.put("duplicate"+ num , img1.getPath());
+            json.put("duplicate"+ num , img2.getPath());
+            a[i++] = json.get();
+	}
+        return Arrays.toString(a);
     }
 }
 
