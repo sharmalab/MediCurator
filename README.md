@@ -16,7 +16,7 @@ For example, HDFS_URI = "hdfs://localhost:9000/"  and  HDFS_BASEDIR = "/user/xxx
 ## Building and Executing Using Apache Maven 3.3.x
 Building
 --------
-     mvn compile
+    ./compile.sh
 
 Testing
 --------
@@ -24,7 +24,7 @@ Testing
 
 Run webapp
 --------
-    mvn tomcat7:run -DskipTests
+    ./run_servlet.sh
 
 It is expected to have the TCIA_API_KEY set in the Constants.java to build with tests.
 
@@ -38,8 +38,7 @@ first so that data you hava stored beforehand won't be lost although the web ser
 
 Run Restful API
 --------
-
-    mvn exec:java -Dexec.mainClass="edu.emory.bmi.medicurator.api.ServerAPI"
+    ./run_api.sh
     
     API:
     http://localhost:4567/signup?username=***&password=*** 
