@@ -1,3 +1,11 @@
+/*
+ * Title:        Medicurator
+ * Description:  Near duplicate detection framework for heterogeneous medical data sources
+ * Licence:      Apache License Version 2.0 - http://www.apache.org/licenses/
+ *
+ * Copyright (c) 2016, Yiru Chen <chen1ru@pku.edu.cn>
+ */
+
 package edu.emory.bmi.medicurator.tcia;
 
 import edu.emory.bmi.medicurator.general.Metadata;
@@ -9,12 +17,16 @@ import java.util.Scanner;
 import java.io.InputStream;
 import java.util.Iterator;
 
-/*
+/**
  * Implementation of TCIA RESTful API
  */
 public class TciaAPI
 {
-    //parse json to a Metadata array
+	/**
+	 * parseJSON
+	 * @param json String
+	 * @return Metadata[]
+     */
     public static Metadata[] parseJSON(String json)
     {
 	JSONArray arr = new JSONArray(json);
@@ -32,6 +44,7 @@ public class TciaAPI
 	}
 	return metas;
     }
+
     public static Metadata[] getCollectionValues()
     {
 	TciaQuery query = new TciaQuery("getCollectionValues");

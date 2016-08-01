@@ -1,3 +1,10 @@
+/*
+ * Title:        Medicurator
+ * Description:  Near duplicate detection framework for heterogeneous medical data sources
+ * Licence:      Apache License Version 2.0 - http://www.apache.org/licenses/
+ *
+ * Copyright (c) 2016, Yiru Chen <chen1ru@pku.edu.cn>
+ */
 package edu.emory.bmi.medicurator.dupdetect;
 
 import edu.emory.bmi.medicurator.general.Metadata;
@@ -6,10 +13,10 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.function.Function;
 import java.util.*;
 
-/*
+/**
  * Verify if a candidate pair is real near-duplicate pair
  * (1) if the raw image data's hash code equals, it is true
- * (2) if there are less than five different metadata items, it is true
+ * (2) compare all the metadata if there are less than five different metadata items, it is true
  */
 public class Verify
 {

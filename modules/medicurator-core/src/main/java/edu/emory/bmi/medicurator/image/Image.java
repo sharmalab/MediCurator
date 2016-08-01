@@ -1,3 +1,11 @@
+/*
+ * Title:        Medicurator
+ * Description:  Near duplicate detection framework for heterogeneous medical data sources
+ * Licence:      Apache License Version 2.0 - http://www.apache.org/licenses/
+ *
+ * Copyright (c) 2016, Yiru Chen <chen1ru@pku.edu.cn>
+ */
+
 package edu.emory.bmi.medicurator.image;
 
 import edu.emory.bmi.medicurator.general.Metadata;
@@ -8,7 +16,7 @@ import java.util.UUID;
 import java.math.BigInteger;
 import java.io.*;
 
-/*
+/**
  * Image is the actual data to be managed in MediCurator.
  * Each Image consists of a Metadata and a byte[] as its raw data.
  * Each Image has a relative path as its storage location.
@@ -16,29 +24,54 @@ import java.io.*;
  */
 public abstract class Image implements Serializable
 {
-    //the unique ID used to retrieve the Image inside MediCurator
+    /**
+     * the unique ID used to retrieve the Image inside MediCurator
+     */
     private UUID imageID = UUID.randomUUID();
+
+    /**
+     * getID
+     * @return ID
+     */
     public UUID getID() { return imageID; }
 
-    //a storage instance used to store data locally
+    /**
+     * a storage instance used to store data locally
+     */
     protected Storage storage = GetStorage.get();
 
-    //the relative path of the Image
+    /**
+     * the relative path of the Image
+     */
     protected String path;
 
-    //the md5 hash value of the image raw data
+    /**
+     * the md5 hash value of the image raw data
+     */
     protected String md5;
 
-    //the ID of the Image's Metadata
+    /**
+     * the ID of the Image's Metadata
+     */
     protected UUID metaID;
 
-    //get Metadata
+    /**
+     * get Metadata
+     * @return Metadata
+     */
     public abstract Metadata getMetadata();
 
-    //get raw data
+    /**
+     * get raw data
+     * @return byte[]
+     */
     public abstract byte[] getRawImage();
 
-    //create a new Image with its relative path
+
+    /**
+     * create a new Image with its relative path
+     * @param path
+     */
     public Image(String path)
     {
 	this.path = path;
@@ -46,7 +79,10 @@ public abstract class Image implements Serializable
 	md5 = null;
     }
 
-    //calculate hash code of image raw data
+    /**
+     * calculate hash code of image raw data
+     * @return String md5
+     */
     public String getHashCode()
     {
 	if (md5 == null)
@@ -69,19 +105,27 @@ public abstract class Image implements Serializable
 	return md5;
     }
 
-    //get relative path
+    /**
+     * get relative path
+     * @return String path
+     */
     public String getPath()
     {
 	return path;
     }
 
-    //get Metadata ID
+    /**
+     * get Metadata ID
+     * @return UUID
+     */
     public UUID getMetaID()
     {
 	return getMetadata().getID();
     }
-    
-    //store the Image to Infinispan
+
+    /**
+     * Store
+     */
     protected void store()
     {
 	ID.setImage(imageID, this);

@@ -1,3 +1,10 @@
+/*
+ * Title:        Medicurator
+ * Description:  Near duplicate detection framework for heterogeneous medical data sources
+ * Licence:      Apache License Version 2.0 - http://www.apache.org/licenses/
+ *
+ * Copyright (c) 2016, Yiru Chen <chen1ru@pku.edu.cn>
+ */
 package edu.emory.bmi.medicurator.dupdetect;
 
 import edu.emory.bmi.medicurator.general.*;
@@ -15,13 +22,18 @@ import org.infinispan.stream.CacheCollectors;
 import java.io.Serializable;
 
 
-/*
+/**
  * Detect near-duplicate pairs of given images
  * Input: an array of Image ID
  * Output: an array of near-duplicate pairs of image ID
  */
 public class DupDetect
 {
+	/**
+	 * DuplicatePair detect
+	 * @param imgIDs UUID[]
+	 * @return Duplicatepair
+     */
     public static DuplicatePair[] detect(UUID[] imgIDs)
     {
 	//create a Cache to store image IDs
@@ -31,8 +43,10 @@ public class DupDetect
 	    idCache.put(id, ID.getImage(id));
 	}
 
-	//find the most diverse keys of images' Metadata
-	//count the number of different values of each key
+		/**
+		 * find the most diverse --(have the most dofferent values) keys of images' Metadata
+		 * count the number of different values of each key
+ 		 */
 	Map<String, Integer> order = idCache.entrySet().parallelStream()
 	    .map((Serializable & Function<Map.Entry<UUID, Image>, Map.Entry<String, String>[]>) e ->
 		    {
@@ -85,7 +99,10 @@ public class DupDetect
 	for (DuplicatePair dp : candidateMeta) candidate.put(dp, 0);
 	for (DuplicatePair dp : candidateImg) candidate.put(dp, 0);
 
-	//verify if the candidate pair is a real near-duplicate pair
+
+		/**
+		 * verify if the candidate pair is a real near-duplicate pair
+		 */
 	List<DuplicatePair> result = candidate.keySet().parallelStream()
 	    .filter(dp -> Verify.verify(ID.getImage(dp.first), ID.getImage(dp.second)))
 	    .collect(CacheCollectors.serializableCollector(() -> Collectors.toList()));

@@ -1,3 +1,10 @@
+/*
+ * Title:        Medicurator
+ * Description:  Near duplicate detection framework for heterogeneous medical data sources
+ * Licence:      Apache License Version 2.0 - http://www.apache.org/licenses/
+ *
+ * Copyright (c) 2016, Yiru Chen <chen1ru@pku.edu.cn>
+ */
 package edu.emory.bmi.medicurator.tcia;
 
 import java.lang.StringBuilder;
@@ -17,7 +24,7 @@ import org.apache.http.HttpEntity;
 import java.io.InputStream;
 import java.net.*;
 
-/*
+/**
  * Build query of TCIA RESTful API, send query and get result
  * User needs to fill the TCIA_API_KEY in Constants before usage
  */
@@ -29,7 +36,10 @@ public class TciaQuery
     StringBuilder query;
     String method;
 
-    //create a new query with specified method(getPatient, getSeries, getImage...)
+	/**
+	 * create a new query with specified method(getPatient, getSeries, getImage...)
+	 * @param method
+     */
     public TciaQuery(String method)
     {
 	query = new StringBuilder();

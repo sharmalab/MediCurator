@@ -1,3 +1,10 @@
+/*
+ * Title:        Medicurator
+ * Description:  Near duplicate detection framework for heterogeneous medical data sources
+ * Licence:      Apache License Version 2.0 - http://www.apache.org/licenses/
+ *
+ * Copyright (c) 2016, Yiru Chen <chen1ru@pku.edu.cn>
+ */
 package edu.emory.bmi.medicurator.tcia;
 
 import edu.emory.bmi.medicurator.infinispan.ID;
@@ -8,7 +15,7 @@ import java.util.UUID;
 import java.util.ArrayList;
 import java.util.zip.*;
 
-/*
+/**
  * Implementation of TCIA DataSet
  * Each hierarchy has a keyword, such as PatientID of patient or StudyInstanceUID of study
  * Series contains Images, other hierarchies don't have Image
@@ -25,7 +32,9 @@ public class TciaDataSet extends DataSet
     //TODO: check if the downloaded DataSet out of date
     public boolean updated() { return true; }
 
-    //create a TciaDataSet with specified Metadata
+	/**
+	 * create a TciaDataSet with specified Metadata
+	 */
     public TciaDataSet(TciaHierarchy hierarchy, UUID parent, Metadata meta)
     {
 	super("tcia");
@@ -61,7 +70,11 @@ public class TciaDataSet extends DataSet
 	return parent;
     }
 
-    // create this DataSet's subsets
+	/**
+	 * create this DataSet's subsets
+	 * @param metas metas
+	 * @param subHierarchy
+	 */
     private void makeSubsets(Metadata[] metas, TciaHierarchy subHierarchy)
     {
 	if (metas.length == 0) return;
@@ -73,7 +86,11 @@ public class TciaDataSet extends DataSet
 	}
     }
 
-    // get ID array of subsets
+
+	/**
+	 * get ID array of subsets
+	 * @return UUID[]
+     */
     public UUID[] getSubsets()
     {
 	if (subsets == null && hierarchy != TciaHierarchy.SERIES)
@@ -104,8 +121,13 @@ public class TciaDataSet extends DataSet
 	return subsets;
     }
 
-    //if this is a Series DataSet, download the images of the Series
-    //the downloaded images are compressed with zip, unzip them and store
+    //
+
+	/**
+	 * if this is a Series DataSet, download the images of the Series
+	 * the downloaded images are compressed with zip, unzip them and store
+	 * @return UUID[]
+     */
     public UUID[] getImages()
     {
 	if (images == null)	
@@ -149,7 +171,11 @@ public class TciaDataSet extends DataSet
 	return keyword;
     }
 
-    //get a subset with specified keyword
+	/**
+	 * get a subset with specified keyword
+	 * @param keyword
+	 * @return
+     */
     public UUID getSubset(String keyword)
     {
 	for (UUID u : getSubsets())

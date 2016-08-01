@@ -1,3 +1,10 @@
+/*
+ * Title:        Medicurator
+ * Description:  Near duplicate detection framework for heterogeneous medical data sources
+ * Licence:      Apache License Version 2.0 - http://www.apache.org/licenses/
+ *
+ * Copyright (c) 2016, Yiru Chen <chen1ru@pku.edu.cn>
+ */
 package edu.emory.bmi.medicurator.servlet;
 
 import java.io.*;
@@ -10,6 +17,9 @@ import edu.emory.bmi.medicurator.infinispan.*;
 import edu.emory.bmi.medicurator.image.*;
 import edu.emory.bmi.medicurator.storage.*;
 
+/**
+ * Signup
+ */
 public class Signup extends Page {
 
     public Signup()

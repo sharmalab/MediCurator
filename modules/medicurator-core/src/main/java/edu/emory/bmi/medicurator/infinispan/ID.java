@@ -1,3 +1,11 @@
+/*
+ * Title:        Medicurator
+ * Description:  Near duplicate detection framework for heterogeneous medical data sources
+ * Licence:      Apache License Version 2.0 - http://www.apache.org/licenses/
+ *
+ * Copyright (c) 2016, Yiru Chen <chen1ru@pku.edu.cn>
+ */
+
 package edu.emory.bmi.medicurator.infinispan;
 
 import edu.emory.bmi.medicurator.general.*;
@@ -6,13 +14,15 @@ import edu.emory.bmi.medicurator.image.Image;
 import org.infinispan.Cache;
 import java.util.UUID;
 
-/*
+/**
  * ID keeps a map of global unique id to the data instance in Infinispan
  * ID supports User, ReplicaSet, DataSource, DataSet, Metadata and Image
  */
 public class ID
 {
-    //Infinispan Caches
+    /**
+     * Infinispan Caches
+     */
     private static Cache<UUID, User> maptoUser;
     private static Cache<UUID, DataSource> maptoDataSource;
     private static Cache<UUID, ReplicaSet> maptoReplicaSet;
@@ -45,7 +55,9 @@ public class ID
 	}
     }
 
-    //get or store data instance with id to Infinispan
+    /**
+     *  get or store data instance with id to Infinispan
+     */
     public static void start() {}
 
     public static User getUser(UUID id) { return maptoUser.get(id); }

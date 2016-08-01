@@ -1,3 +1,10 @@
+/*
+ * Title:        Medicurator
+ * Description:  Near duplicate detection framework for heterogeneous medical data sources
+ * Licence:      Apache License Version 2.0 - http://www.apache.org/licenses/
+ *
+ * Copyright (c) 2016, Yiru Chen <chen1ru@pku.edu.cn>
+ */
 package edu.emory.bmi.medicurator.storage;
 
 import edu.emory.bmi.medicurator.Constants;
@@ -9,15 +16,20 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.*;
 import org.apache.hadoop.hdfs.*;  
 
-/*
+/**
  * Implementation of HDFS storage
  */
 public class HdfsStorage implements Storage, Serializable
 {
     private String hdfsPath = Constants.HDFS_BASEDIR;
 
-    //save data from InputStream to a relative path
-    //required parent directories will be created if not exists
+	/**
+	 * save data from InputStream to a relative path
+	 * required parent directories will be created if not exists
+	 * @param path String path
+	 * @param in InputStream
+     * @return boolean
+     */
     public boolean saveToPath(String path, InputStream in)
     {
 	try {
@@ -44,7 +56,11 @@ public class HdfsStorage implements Storage, Serializable
 	return false;
     }
 
-    //get the InputStream of a file with specified relative path
+	/**
+	 * get the InputStream of a file with specified relative path
+	 * @param path
+	 * @return InputStream
+     */
     public InputStream loadFromPath(String path)
     {
 	InputStream in = null;
@@ -52,8 +68,8 @@ public class HdfsStorage implements Storage, Serializable
 	    Configuration conf = new Configuration(); 
 	    FileSystem hdfs = FileSystem.get(new URI(Constants.HDFS_URI), conf);
 	    Path hdfspath = new Path(hdfsPath+path);
-	    if (!hdfs.exists(hdfspath)) { 
-		System.out.println("File does not exists"); 
+	    if (!hdfs.exists(hdfspath)) {
+		System.out.println("File does not exists");
 		return in; 
 	    }
 	    in = hdfs.open(hdfspath);

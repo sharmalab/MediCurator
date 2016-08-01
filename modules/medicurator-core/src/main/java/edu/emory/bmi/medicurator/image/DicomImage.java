@@ -1,3 +1,11 @@
+/*
+ * Title:        Medicurator
+ * Description:  Near duplicate detection framework for heterogeneous medical data sources
+ * Licence:      Apache License Version 2.0 - http://www.apache.org/licenses/
+ *
+ * Copyright (c) 2016, Yiru Chen <chen1ru@pku.edu.cn>
+ */
+
 package edu.emory.bmi.medicurator.image;
 
 import edu.emory.bmi.medicurator.general.*;
@@ -11,14 +19,17 @@ import org.dcm4che2.data.Tag;
 import java.io.*;
 import java.util.*;
 
-/*
+/**
  * Implementation of DICOM image type
  * Use dcm4che library to parse the image data
  */
 public class DicomImage extends Image
 {
-    //parse the Metadata of a DICOM image
-    public Metadata getMetadata()
+	/**
+	 * parse the Metadata of a DICOM image
+	 * @return Metadata
+     */
+	public Metadata getMetadata()
     {
 	if (metaID == null)
 	{
@@ -43,9 +54,11 @@ public class DicomImage extends Image
 	}
 	return ID.getMetadata(metaID);
     }
-
-    //get the raw image data as a byte array
-    //return the bytes from DICOM's Pixel Data
+	/**
+	 * get the raw image data as a byte array
+	 * return the bytes from DICOM's Pixel Data
+	 * @return byte[]
+     */
     public byte[] getRawImage()
     {
 	InputStream in = getImage();
@@ -63,15 +76,21 @@ public class DicomImage extends Image
 	return new byte[0];
     }
 
-    //create a new DicomImage with its path
+	/**
+	 * create a new DicomImage with its path
+	 * @param path path
+     */
     public DicomImage(String path)
     {
 	super(path);
 	ID.setImage(getID(), this);
     }
 
-    //read image data from its path
-    private InputStream getImage()
+	/**
+	 * open the InputSteam
+ 	 * @return InputStream
+     */
+	private InputStream getImage()
     {
 	return storage.loadFromPath(path);
     }

@@ -1,3 +1,10 @@
+/*
+ * Title:        Medicurator
+ * Description:  Near duplicate detection framework for heterogeneous medical data sources
+ * Licence:      Apache License Version 2.0 - http://www.apache.org/licenses/
+ *
+ * Copyright (c) 2016, Yiru Chen <chen1ru@pku.edu.cn>
+ */
 package edu.emory.bmi.medicurator.api;
 
 import edu.emory.bmi.medicurator.api.RestfulAPI;
@@ -8,6 +15,9 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
+/**
+ * List Restful API format
+ */
 public class ServerAPI
 {
     public static void main( String[] args) {

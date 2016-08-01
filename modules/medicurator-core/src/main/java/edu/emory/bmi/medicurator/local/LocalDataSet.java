@@ -1,3 +1,10 @@
+/*
+ * Title:        Medicurator
+ * Description:  Near duplicate detection framework for heterogeneous medical data sources
+ * Licence:      Apache License Version 2.0 - http://www.apache.org/licenses/
+ *
+ * Copyright (c) 2016, Yiru Chen <chen1ru@pku.edu.cn>
+ */
 package edu.emory.bmi.medicurator.local;
 
 import edu.emory.bmi.medicurator.general.*;
@@ -9,6 +16,9 @@ import java.util.*;
 import java.lang.*;
 import java.io.*;
 
+/**
+ * LocalDataset similar with the Dataset
+ */
 public class LocalDataSet extends DataSet
 {
     private String source;
@@ -66,9 +76,10 @@ public class LocalDataSet extends DataSet
 	return subsets;
     }
 
-
-    //if this is a Series DataSet, download the images of the Series
-    //the downloaded images are compressed with zip, unzip them and store
+	/**
+	 * if this is a Series DataSet, download the images of the Series
+	 * @return
+     */
     public UUID[] getImages()
     {
 	if (images == null)

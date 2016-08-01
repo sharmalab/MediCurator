@@ -1,3 +1,10 @@
+/*
+ * Title:        Medicurator
+ * Description:  Near duplicate detection framework for heterogeneous medical data sources
+ * Licence:      Apache License Version 2.0 - http://www.apache.org/licenses/
+ *
+ * Copyright (c) 2016, Yiru Chen <chen1ru@pku.edu.cn>
+ */
 package edu.emory.bmi.medicurator.dupdetect;
 
 import org.infinispan.Cache;
@@ -13,11 +20,18 @@ import org.infinispan.stream.CacheCollectors;
 import java.util.stream.Collectors;
 
 
-/*
+/**
  * Generate five tuples of most diverse key-value and image ID
  */
+
 class ParseMetadata implements Serializable, Function<Map.Entry<UUID, Metadata>, Map.Entry<String, UUID>[]>
 {
+	/**
+	 * Generate five tuples of most diverse key-value and image ID
+	 * key: key-value value: imageID
+	 * @param e
+	 * @return Map.Entry
+     */
     public Map.Entry<String, UUID>[] apply(Map.Entry<UUID, Metadata> e)
     {
 	try {
@@ -47,7 +61,7 @@ class ParseMetadata implements Serializable, Function<Map.Entry<UUID, Metadata>,
     }
 }
 
-/*
+/**
  * Get the candidate near-duplicate pairs from Images' Metadata
  * For each image, choose five most diverse keys of its Metadata to compare with other images
  * If two images have same value on one key of the five, they are considered to be near-duplicate
@@ -58,6 +72,11 @@ class ParseMetadata implements Serializable, Function<Map.Entry<UUID, Metadata>,
  */
 public class DetectMetadata
 {
+	/**
+	 * make nearduplicate pair
+	 * @param origin origin
+	 * @return nearduplicate pair
+     */
     public static DuplicatePair[] detect(Cache<UUID, Image> origin)
     {
 	Map<String, List<Map.Entry<String, UUID>>> candidates = 

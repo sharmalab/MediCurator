@@ -1,3 +1,11 @@
+/*
+ * Title:        Medicurator
+ * Description:  Near duplicate detection framework for heterogeneous medical data sources
+ * Licence:      Apache License Version 2.0 - http://www.apache.org/licenses/
+ *
+ * Copyright (c) 2016, Yiru Chen <chen1ru@pku.edu.cn>
+ */
+
 package edu.emory.bmi.medicurator.dupdetect;
 
 import org.infinispan.Cache;
@@ -11,7 +19,8 @@ import org.infinispan.stream.CacheCollectors;
 import java.util.stream.Collectors;
 
 
-/*
+
+/**
  * Get the candidate duplicate pair from raw image data
  */
 public class DetectImage
@@ -26,7 +35,7 @@ public class DetectImage
 	    .collect(CacheCollectors.serializableCollector(() -> Collectors.groupingBy(e -> e.getKey())));
 
 
-	//make pair
+	//to find images who have the same hash code and make pair
 	ArrayList<DuplicatePair> result = new ArrayList<DuplicatePair>();
 	for (Map.Entry<String, List<Map.Entry<String, UUID>>> e : candidates.entrySet())
 	{
