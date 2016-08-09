@@ -11,8 +11,7 @@ import edu.emory.bmi.medicurator.infinispan.ID;
 import edu.emory.bmi.medicurator.storage.*;
 import edu.emory.bmi.medicurator.general.*;
 import edu.emory.bmi.medicurator.image.*;
-import java.util.UUID;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.zip.*;
 
 /**
@@ -26,15 +25,38 @@ public class TciaDataSet extends DataSet
     private TciaHierarchy hierarchy;
     private String keyword;
     private UUID parent;
-    private UUID[] subsets;
+    private ArrayList<UUID> subsets;
     private UUID[] images;
+    private String lastVisit;
 
-    //TODO: check if the downloaded DataSet out of date
-    public boolean updated() { return true; }
+    /* happy QiXi vacation */
 
-	/**
-	 * create a TciaDataSet with specified Metadata
-	 */
+    private void visit()
+    {
+	Date now = new Date();
+	lastVisit = now.toString();
+    }
+
+    public boolean updated()
+    {
+	Metadata meta = getMetadata();
+	switch (hierarchy)
+	{
+	    case COLLECTION:
+		Metadata[] newPatients = TciaAPI.newPatientsInCollection(lastVisit, meta.get("Collection"));
+		if (newPatients.length > 0) return false;
+		break;
+	    case PATIENT:
+		Metadata[] newStudies = TciaAPI.newStudiesInPatientCollection(lastVisit, meta.get("Collection"), meta.get("PatientID"));
+		if (newStudies.length > 0) return false;
+		break;
+	}
+	return true;
+    }
+
+    /**
+     * create a TciaDataSet with specified Metadata
+     */
     public TciaDataSet(TciaHierarchy hierarchy, UUID parent, Metadata meta)
     {
 	super("tcia");
@@ -42,7 +64,8 @@ public class TciaDataSet extends DataSet
 	setMetaID(meta.getID());
 	this.hierarchy = hierarchy;
 	this.parent = parent;
-	subsets = null;
+	subsets = new ArrayList<UUID>();
+	lastVisit = "1970-01-01";
 	images = null;
 	switch (hierarchy)   // get keyword
 	{
@@ -70,30 +93,33 @@ public class TciaDataSet extends DataSet
 	return parent;
     }
 
-	/**
-	 * create this DataSet's subsets
-	 * @param metas metas
-	 * @param subHierarchy
-	 */
+    /**
+     * create this DataSet's subsets
+     * @param metas metas
+     * @param subHierarchy
+     */
     private void makeSubsets(Metadata[] metas, TciaHierarchy subHierarchy)
     {
 	if (metas.length == 0) return;
-	subsets = new UUID[metas.length];
 	for (int i = 0; i < metas.length; ++i)
 	{
 	    DataSet subset = new TciaDataSet(subHierarchy, getID(), metas[i]);
-	    subsets[i] = subset.getID();
+	    subsets.add(subset.getID());
 	}
     }
 
 
-	/**
-	 * get ID array of subsets
-	 * @return UUID[]
+    /**
+     * get ID array of subsets
+     * @return UUID[]
      */
     public UUID[] getSubsets()
     {
-	if (subsets == null && hierarchy != TciaHierarchy.SERIES)
+	if (hierarchy == TciaHierarchy.SERIES)
+	{
+	    return null;
+	}
+	if (subsets.size() == 0)
 	{
 	    Metadata meta = getMetadata();
 	    Metadata[] metas;
@@ -118,15 +144,46 @@ public class TciaDataSet extends DataSet
 	    }
 	    store();
 	}
-	return subsets;
+	else if (!updated())
+	{
+	    Metadata meta = getMetadata();
+	    Metadata[] newcoming, metas;
+	    if (hierarchy == TciaHierarchy.COLLECTION)
+	    {
+		newcoming = TciaAPI.newPatientsInCollection(lastVisit, meta.get("Collection"));
+		metas = TciaAPI.getPatient(meta.get("Collection"));
+		for (Metadata m : newcoming)
+		{
+		    for (Metadata m2 : metas)
+		    {
+			if (m.get("PatientID").equals(m2.get("PatientID")))
+			{
+			    DataSet subset = new TciaDataSet(TciaHierarchy.PATIENT, getID(), m2);
+			    subsets.add(subset.getID());
+			    break;
+			}
+		    }
+		}
+	    }
+	    else if (hierarchy == TciaHierarchy.PATIENT)
+	    {
+		newcoming = TciaAPI.newStudiesInPatientCollection(lastVisit, meta.get("Collection"), meta.get("PatientID"));
+		for (Metadata m : newcoming)
+		{
+		    metas = TciaAPI.getPatientStudy(meta.get("Collection"), meta.get("PatientID"), m.get("StudyInstanceUID"));
+		    DataSet subset = new TciaDataSet(TciaHierarchy.STUDY, getID(), metas[0]);
+		    subsets.add(subset.getID());
+		}
+	    }
+	}
+	visit();
+	return subsets.toArray(new UUID[0]);
     }
 
-    //
-
-	/**
-	 * if this is a Series DataSet, download the images of the Series
-	 * the downloaded images are compressed with zip, unzip them and store
-	 * @return UUID[]
+    /**
+     * if this is a Series DataSet, download the images of the Series
+     * the downloaded images are compressed with zip, unzip them and store
+     * @return UUID[]
      */
     public UUID[] getImages()
     {
@@ -142,7 +199,7 @@ public class TciaDataSet extends DataSet
 		ArrayList<UUID> imgs = new ArrayList<UUID>();
 		try {
 		    String root = "/tcia/" + meta.get("Collection") + "/" + ID.getDataSet(getParent()).getMetadata().get("PatientID")
-				    + "/" + meta.get("StudyInstanceUID") + "/" + meta.get("SeriesInstanceUID") + "/";
+			+ "/" + meta.get("StudyInstanceUID") + "/" + meta.get("SeriesInstanceUID") + "/";
 		    ZipInputStream zip = new ZipInputStream(TciaAPI.getImage(meta.get("SeriesInstanceUID")));
 		    ZipEntry ze;
 		    while ((ze = zip.getNextEntry()) != null)
@@ -171,10 +228,10 @@ public class TciaDataSet extends DataSet
 	return keyword;
     }
 
-	/**
-	 * get a subset with specified keyword
-	 * @param keyword
-	 * @return
+    /**
+     * get a subset with specified keyword
+     * @param keyword
+     * @return
      */
     public UUID getSubset(String keyword)
     {

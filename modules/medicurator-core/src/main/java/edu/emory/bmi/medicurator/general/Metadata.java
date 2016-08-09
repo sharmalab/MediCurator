@@ -84,7 +84,6 @@ public class Metadata implements Serializable
 	return keyValues.containsKey(key);
     }
 
-
     /**
      * get the corresponding value of a key
      * @param key string
