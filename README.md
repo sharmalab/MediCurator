@@ -4,7 +4,9 @@ MediCurator is a medical image data manager. It allows user to fetch image data 
 
 
 ## Setting the Constants
-Set the TCIA_API_KEY, DATA_BASE_DIR in ./src/main/java/edu/emory/bmi/medicurator/Constants.java
+Set the API_KEY in ./config.sh
+
+DATA_BASE_DIR in ./src/main/java/edu/emory/bmi/medicurator/Constants.java
 
 Also set PROXY_HOST, PROXY_PORT if necessary.
 
