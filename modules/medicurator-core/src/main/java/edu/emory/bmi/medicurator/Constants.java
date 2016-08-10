@@ -22,11 +22,11 @@ public class Constants
     public static String HDFS_URI = null;//"hdfs://162.105.203.138:9000/";
     public static String HDFS_BASEDIR = null;//"/user/chenyr/medicurator/";
 
-    public static String TCIA_API_KEY = "ba449283-f680-4dc8-9df4-69545cc33f94";
-    public static String PROXY_HOST = "proxy1.megvii-inc.com";
-    public static Integer PROXY_PORT = 25;
-    public static String PROXY_USERNAME =  "megvii";
-    public static String PROXY_PASSWORD = "face++";
+    public static String TCIA_API_KEY = System.getenv("API_KEY");
+    public static String PROXY_HOST = "162.105.146.215";
+    public static Integer PROXY_PORT = 443;
+    public static String PROXY_USERNAME = null; 
+    public static String PROXY_PASSWORD = null;
     public static ArrayList<DataSource> DATA_SOURCES = new ArrayList<DataSource>();
 
     static

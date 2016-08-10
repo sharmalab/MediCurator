@@ -60,6 +60,7 @@ public class TciaQuery
     //get the query URL
     public String getQuery()
     {
+	System.out.println(query.toString());
 	return query.toString();
     }
 
