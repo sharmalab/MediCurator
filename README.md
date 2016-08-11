@@ -68,4 +68,6 @@ This project depends on the below major projects.
 * dcm4che 3
 * Apache HTTP Client
 * Tomcat 7
+* Hadoop 2.7.2
+* Spark Java 2.5
 
