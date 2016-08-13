@@ -2,6 +2,7 @@
 
 MediCurator is a medical image data manager. It allows user to fetch image data from heterogeneous data sources, access them in a uniform way, and build a local image database without near duplicate images.
 
+You can reach the document at http://medicurator.readthedocs.io/en/latest/ .
 
 ## Setting the Constants
 Set the API_KEY in ./config.sh
